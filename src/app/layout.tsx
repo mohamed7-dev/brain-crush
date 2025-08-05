@@ -4,6 +4,7 @@ import { MuiCacheProvider } from "@/components/providers/mui-cache-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { roboto } from "@/lib/fonts";
 import { SessionProvider } from "@/components/providers/session-provider";
+import { SnackbarProvider } from "@/components/providers/snackbar-provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,7 +21,9 @@ export default function RootLayout({
       <html lang="en" suppressHydrationWarning>
         <body className={roboto.variable}>
           <MuiCacheProvider>
-            <ThemeProvider>{children}</ThemeProvider>
+            <ThemeProvider>
+              <SnackbarProvider>{children}</SnackbarProvider>
+            </ThemeProvider>
           </MuiCacheProvider>
         </body>
       </html>

@@ -1,0 +1,34 @@
+import { handleError, ValidationException } from "@/lib/exceptions";
+import { SuccessFindRes } from "../lib/type-utils";
+import { getCourseService } from "../services/get-course.service";
+import z from "zod";
+import { getCourseSchema, GetCourseSchema } from "../lib/schema";
+
+async function handleFetchingCourse(input: GetCourseSchema) {
+  const { success, error, data: parsedData } = getCourseSchema.safeParse(input);
+  if (!success) throw new ValidationException(z.treeifyError(error));
+  const foundCourse = await getCourseService(parsedData);
+  return {
+    success: true,
+    statusCode: 201,
+    data: foundCourse,
+    total: 1,
+    nextCursor: undefined,
+  } satisfies SuccessFindRes<typeof foundCourse>;
+}
+
+export async function fetchCourse(input: GetCourseSchema) {
+  try {
+    return await handleFetchingCourse(input);
+  } catch (error) {
+    return handleError(error);
+  }
+}
+
+export type FetchCourseSuccessRes = Awaited<
+  ReturnType<typeof handleFetchingCourse>
+>;
+
+export type FetchCourseErrorRes = ReturnType<
+  typeof handleError<GetCourseSchema>
+>;
