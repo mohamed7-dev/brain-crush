@@ -3,6 +3,7 @@ import { SuccessFindRes } from "../lib/type-utils";
 import { getCourseService } from "../services/get-course.service";
 import z from "zod";
 import { getCourseSchema, GetCourseSchema } from "../lib/schema";
+import { unstable_cache } from "next/cache";
 
 async function handleFetchingCourse(input: GetCourseSchema) {
   const { success, error, data: parsedData } = getCourseSchema.safeParse(input);
@@ -17,13 +18,25 @@ async function handleFetchingCourse(input: GetCourseSchema) {
   } satisfies SuccessFindRes<typeof foundCourse>;
 }
 
-export async function fetchCourse(input: GetCourseSchema) {
-  try {
-    return await handleFetchingCourse(input);
-  } catch (error) {
-    return handleError(error);
-  }
-}
+export const fetchCourse = unstable_cache(
+  async (input: GetCourseSchema) => {
+    try {
+      return await handleFetchingCourse(input);
+    } catch (error) {
+      return handleError(error);
+    }
+  },
+  ["courses"],
+  { tags: ["courses", "course"], revalidate: 3600 }
+);
+
+// export async function fetchCourse(input: GetCourseSchema) {
+//   try {
+//     return await handleFetchingCourse(input);
+//   } catch (error) {
+//     return handleError(error);
+//   }
+// }
 
 export type FetchCourseSuccessRes = Awaited<
   ReturnType<typeof handleFetchingCourse>

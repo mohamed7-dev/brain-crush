@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { roboto } from "@/lib/fonts";
 import { SessionProvider } from "@/components/providers/session-provider";
 import { SnackbarProvider } from "@/components/providers/snackbar-provider";
+import { TanstackQueryProvider } from "@/components/providers/tanstack-query-provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,7 +23,9 @@ export default function RootLayout({
         <body className={roboto.variable}>
           <MuiCacheProvider>
             <ThemeProvider>
-              <SnackbarProvider>{children}</SnackbarProvider>
+              <TanstackQueryProvider>
+                <SnackbarProvider>{children}</SnackbarProvider>
+              </TanstackQueryProvider>
             </ThemeProvider>
           </MuiCacheProvider>
         </body>

@@ -1,60 +1,59 @@
 "use client";
-import React from "react";
 import { EditOutlined } from "@mui/icons-material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import React from "react";
 import { FetchCourseSuccessRes } from "../../api/fetch-course.api";
+import { formatPrice } from "@/lib/utils";
 import { Controller, useForm } from "react-hook-form";
-import TextField from "@mui/material/TextField";
-import {
-  UpdateCourseTitleSchema,
-  updateCourseTitleSchema,
-} from "../../lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  updateCoursePriceSchema,
+  UpdateCoursePriceSchema,
+} from "../../lib/schema";
+import TextField from "@mui/material/TextField";
+import { useUpdateCourse } from "../../hooks/use-update-course";
 import { useSnackbar } from "@/components/providers/snackbar-provider";
 import { useRouter } from "next/navigation";
-import { useUpdateCourse } from "../../hooks/use-update-course";
 
-type UpdateTitleFormProps = {
-  defaultTitle: FetchCourseSuccessRes["data"]["title"];
+type CoursePriceFormProps = {
+  defaultPrice: FetchCourseSuccessRes["data"]["price"];
   courseId: FetchCourseSuccessRes["data"]["id"];
 };
 
-export function UpdateTitleForm({
-  defaultTitle,
+export function CoursePriceForm({
   courseId,
-}: UpdateTitleFormProps) {
-  const updateCourseTitleForm = useForm<UpdateCourseTitleSchema>({
+  defaultPrice,
+}: CoursePriceFormProps) {
+  const updateCoursePriceForm = useForm<UpdateCoursePriceSchema>({
     defaultValues: {
-      title: defaultTitle,
+      price: defaultPrice || 0,
       courseId,
     },
-    resolver: zodResolver(updateCourseTitleSchema),
+    resolver: zodResolver(updateCoursePriceSchema),
   });
+  const [isEditing, setIsEditing] = React.useState(false);
+  const toggleEdit = () => setIsEditing((current) => !current);
   const { showSnackbar } = useSnackbar();
   const router = useRouter();
-
-  const [isEditing, setIsEditing] = React.useState(false);
-
-  const toggleEdit = () => setIsEditing((current) => !current);
 
   const { mutateAsync: updateCourse, isPending: isUpdating } = useUpdateCourse({
     onSuccess: (data) => {
       showSnackbar({ message: data.message, severity: "success" });
+      updateCoursePriceForm.reset({ price: data.data.price });
       router.refresh();
-      updateCourseTitleForm.reset({ title: data.data.title });
     },
     onError: (error) => {
       showSnackbar({ message: error.message, severity: "error" });
-      updateCourseTitleForm.reset();
+      updateCoursePriceForm.reset();
     },
   });
 
-  const onSubmit = async (values: UpdateCourseTitleSchema) => {
+  const onSubmit = async (values: UpdateCoursePriceSchema) => {
     await updateCourse({
-      dataToUpdate: { title: values.title },
+      dataToUpdate: { price: values.price },
       courseId: values.courseId,
     });
   };
@@ -72,7 +71,7 @@ export function UpdateTitleForm({
         sx={{ justifyContent: "space-between", alignItems: "center" }}
       >
         <Typography component={"p"} variant="subtitle2">
-          Course title
+          Course price
         </Typography>
         <Button
           variant="outlined"
@@ -85,28 +84,36 @@ export function UpdateTitleForm({
       <Stack sx={{ gap: 2 }}>
         {!isEditing && (
           <Typography component={"p"} variant="body2">
-            {defaultTitle}
+            {defaultPrice ? formatPrice(defaultPrice) : "No Price"}
           </Typography>
         )}
         {isEditing && (
           <Stack
             component="form"
             autoComplete="off"
-            onSubmit={updateCourseTitleForm.handleSubmit(onSubmit)}
+            onSubmit={updateCoursePriceForm.handleSubmit(onSubmit)}
             sx={{ gap: "2" }}
           >
             <Controller
-              name="title"
-              control={updateCourseTitleForm.control}
-              render={({ field }) => (
+              name="price"
+              control={updateCoursePriceForm.control}
+              render={({ field: { onChange, ...field } }) => (
                 <TextField
+                  type="number"
                   variant="outlined"
                   margin="normal"
-                  error={!!updateCourseTitleForm.formState.errors.title}
+                  error={!!updateCoursePriceForm.formState.errors.price}
                   fullWidth
                   disabled={isUpdating}
                   helperText={
-                    updateCourseTitleForm.formState.errors.title?.message
+                    updateCoursePriceForm.formState.errors.price?.message
+                  }
+                  placeholder="Set a price for your course"
+                  onChange={(e) =>
+                    updateCoursePriceForm.setValue(
+                      "price",
+                      Number(e.target.value)
+                    )
                   }
                   {...field}
                 />
@@ -119,7 +126,7 @@ export function UpdateTitleForm({
               loading={isUpdating}
               loadingPosition="start"
               disabled={
-                updateCourseTitleForm.watch("title") === defaultTitle ||
+                updateCoursePriceForm.watch("price") === (defaultPrice || 0) ||
                 isUpdating
               }
             >
