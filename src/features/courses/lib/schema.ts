@@ -1,12 +1,18 @@
 import z from "zod";
-import { createUpdateSchema } from "drizzle-zod";
-import { coursesTable } from "@/server/db/schema";
+import { createInsertSchema, createUpdateSchema } from "drizzle-zod";
+import { attachmentsTable, coursesTable } from "@/server/db/schema";
 
-export const createCourseSchema = z.object({
-  title: z.string().min(3, {
-    error: "The length of the course title must be at least 3 characters.",
-  }),
-});
+const insertCourseSchema = createInsertSchema(coursesTable);
+
+export const createCourseSchema = insertCourseSchema
+  .pick({
+    title: true,
+  })
+  .extend({
+    title: z.string().min(3, {
+      error: "Course title must be at least 3 characters long.",
+    }),
+  });
 
 export type CreateCourseSchema = z.infer<typeof createCourseSchema>;
 
@@ -46,9 +52,25 @@ export type UpdateCourseDescriptionSchema = z.infer<
 >;
 
 export const updateCourseCoverSchema = z.object({
-  coverImageUrl: updateCourseSchema.shape.dataToUpdate
-    .pick({ imageUrl: true })
-    .shape.imageUrl.nonoptional(),
+  coverImage: updateCourseSchema.shape.dataToUpdate
+    .pick({
+      imageUrl: true,
+      imageKey: true,
+      imageName: true,
+      imageSize: true,
+      imageType: true,
+    })
+    .refine(
+      (data) =>
+        data.imageUrl !== null &&
+        data.imageKey !== null &&
+        data.imageName !== null &&
+        data.imageSize !== null &&
+        data.imageType !== null,
+      {
+        message: "All image fields must be non-null",
+      }
+    ),
   courseId: updateCourseSchema.shape.courseId,
 });
 
@@ -62,3 +84,21 @@ export const updateCoursePriceSchema = z.object({
 });
 
 export type UpdateCoursePriceSchema = z.infer<typeof updateCoursePriceSchema>;
+
+export const createAttachmentSchema = createInsertSchema(attachmentsTable).omit(
+  {
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+  }
+);
+
+export type CreateAttachmentSchema = z.infer<typeof createAttachmentSchema>;
+
+export const deleteAttachmentSchema = z.object({
+  id: z.uuid().trim(),
+  courseId: z.uuid().trim(),
+  fileKey: createAttachmentSchema.shape.key,
+});
+
+export type DeleteAttachmentSchema = z.infer<typeof deleteAttachmentSchema>;

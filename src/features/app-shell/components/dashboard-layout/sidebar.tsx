@@ -4,10 +4,8 @@ import Box from "@mui/material/Box";
 import { drawerClasses } from "@mui/material/Drawer";
 import { SidebarMenuContent } from "./sidebar-menu-content";
 import { Logo } from "../logo";
-import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import { SidebarFooter } from "./sidebar-footer";
-import { appBarClasses } from "@mui/material";
 
 export function Sidebar() {
   return (
@@ -17,6 +15,8 @@ export function Sidebar() {
         display: { xs: "none", md: "block" },
         [`& .${drawerClasses.paper}`]: {
           backgroundColor: "background.paper",
+          boxShadow: 0,
+          border: 0,
         },
       }}
     >

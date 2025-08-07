@@ -2,6 +2,9 @@ import React from "react";
 import { TeacherCoursePageView } from "@/features/courses";
 import { fetchCourse } from "@/features/courses/api/fetch-course.api";
 import { notFound } from "next/navigation";
+import { getQueryClient } from "@/lib/query-client";
+import { fetchCategoriesQueryOptions } from "@/features/categories";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 type TeacherCoursePageProps = {
   params: Promise<{ courseId: string }>;
@@ -17,5 +20,12 @@ export default async function TeacherCoursePage({
   }
   const foundCourse = res.data;
 
-  return <TeacherCoursePageView course={foundCourse} />;
+  const client = getQueryClient();
+  void client.prefetchInfiniteQuery(fetchCategoriesQueryOptions);
+
+  return (
+    <HydrationBoundary state={dehydrate(client)}>
+      <TeacherCoursePageView course={foundCourse} />
+    </HydrationBoundary>
+  );
 }

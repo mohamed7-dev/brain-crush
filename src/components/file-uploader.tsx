@@ -1,11 +1,14 @@
 import React from "react";
 import { UploadDropzone } from "@/lib/uploadthing-client";
 import { ourFileRouter } from "@/lib/uploadthing-server";
+import { ClientUploadedFileData } from "uploadthing/types";
 import "@uploadthing/react/styles.css";
+
+export type UploadedFile = ClientUploadedFileData<null>;
 
 type FileUploaderProps = {
   endpoint: keyof typeof ourFileRouter;
-  onChange: (url?: string) => void;
+  onChange: (file: ClientUploadedFileData<null>) => void;
   onUploadError?: (message: string) => void;
 };
 export function FileUploader({
@@ -16,7 +19,7 @@ export function FileUploader({
   return (
     <UploadDropzone
       endpoint={endpoint}
-      onClientUploadComplete={(res) => onChange(res?.[0]?.ufsUrl)}
+      onClientUploadComplete={(res) => onChange(res?.[0])}
       onUploadError={(e) => onUploadError?.(e.message)}
     />
   );

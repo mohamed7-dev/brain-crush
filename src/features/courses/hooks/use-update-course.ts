@@ -13,7 +13,7 @@ type UseUpdateCourseError = UpdateCourseErrorRes;
 export function useUpdateCourse(
   options?: MutateOptions<UseUpdateCourseSuccess, UseUpdateCourseError, Input>
 ) {
-  return useMutation<UseUpdateCourseSuccess, UseUpdateCourseError, Input>({
+  return useMutation({
     mutationFn: async (input) => {
       const res = await updateCourse(input);
       if ("error" in res) throw res;

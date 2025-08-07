@@ -7,8 +7,6 @@ import { MobileSidebar } from "./mobile-sidebar";
 import { badgeClasses } from "@mui/material/Badge";
 import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
-import { Logo } from "../logo";
-import Box from "@mui/material/Box";
 import { TeacherModeButton } from "../teacher-mode-button";
 import { AuthButton } from "../auth-button";
 
@@ -25,8 +23,6 @@ export function Header() {
         boxShadow: 0,
         bgcolor: "background.paper",
         backgroundImage: "none",
-        borderBottom: "1px solid",
-        borderColor: "divider",
         top: "var(--template-frame-height, 0px)",
       }}
     >

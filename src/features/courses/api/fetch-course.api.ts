@@ -1,5 +1,5 @@
 import { handleError, ValidationException } from "@/lib/exceptions";
-import { SuccessFindRes } from "../lib/type-utils";
+import { SuccessFindRes } from "../../../lib/type-utils";
 import { getCourseService } from "../services/get-course.service";
 import z from "zod";
 import { getCourseSchema, GetCourseSchema } from "../lib/schema";
@@ -11,7 +11,7 @@ async function handleFetchingCourse(input: GetCourseSchema) {
   const foundCourse = await getCourseService(parsedData);
   return {
     success: true,
-    statusCode: 201,
+    statusCode: 200,
     data: foundCourse,
     total: 1,
     nextCursor: undefined,
@@ -29,14 +29,6 @@ export const fetchCourse = unstable_cache(
   ["courses"],
   { tags: ["courses", "course"], revalidate: 3600 }
 );
-
-// export async function fetchCourse(input: GetCourseSchema) {
-//   try {
-//     return await handleFetchingCourse(input);
-//   } catch (error) {
-//     return handleError(error);
-//   }
-// }
 
 export type FetchCourseSuccessRes = Awaited<
   ReturnType<typeof handleFetchingCourse>

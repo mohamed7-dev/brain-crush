@@ -1,5 +1,5 @@
 "use client";
-import { FileUploader } from "@/components/file-uploader";
+import { FileUploader, UploadedFile } from "@/components/file-uploader";
 import {
   EditOutlined,
   ImageOutlined,
@@ -12,19 +12,18 @@ import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { UpdateCourseCoverSchema } from "../../lib/schema";
 import { FetchCourseSuccessRes } from "../../api/fetch-course.api";
 import { useSnackbar } from "@/components/providers/snackbar-provider";
 import { useUpdateCourse } from "../../hooks/use-update-course";
 
-type UpdateCourseCoverProps = {
+type CourseCoverImageSectionProps = {
   defaultImageUrl: FetchCourseSuccessRes["data"]["imageUrl"];
   courseId: string;
 };
-export function UpdateCourseCoverImage({
+export function CourseCoverImageSection({
   courseId,
   defaultImageUrl,
-}: UpdateCourseCoverProps) {
+}: CourseCoverImageSectionProps) {
   const [isEditing, setIsEditing] = React.useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -44,9 +43,15 @@ export function UpdateCourseCoverImage({
     },
   });
 
-  const onSubmit = async (values: Partial<UpdateCourseCoverSchema>) => {
+  const onSubmit = async (file: UploadedFile) => {
     await updateCourse({
-      dataToUpdate: { imageUrl: values.coverImageUrl },
+      dataToUpdate: {
+        imageUrl: file.ufsUrl,
+        imageKey: file.key,
+        imageType: file.type,
+        imageName: file.name,
+        imageSize: file.size,
+      },
       courseId,
     });
   };
@@ -118,13 +123,13 @@ export function UpdateCourseCoverImage({
         <Stack sx={{ gap: 2 }}>
           <FileUploader
             endpoint="courseCoverImage"
-            onChange={async (url) => {
-              await onSubmit({ coverImageUrl: url });
+            onChange={async (file) => {
+              await onSubmit(file);
             }}
             onUploadError={(message) => console.log(message)}
           />
           <Typography variant="subtitle2">
-            16:9 aspect ratio is recommended to be used
+            16:9 aspect ratio is recommended
           </Typography>
         </Stack>
       )}

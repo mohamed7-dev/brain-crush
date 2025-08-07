@@ -4,6 +4,8 @@ export const routes = {
   teacher: "/teacher",
   teacherCourses: "/teacher/courses",
   teacherCourse: (id: string) => `/teacher/courses/${id}`,
+  teacherCourseChapter: (courseId: string, chapterId: string) =>
+    `/teacher/courses/${courseId}/chapters/${chapterId}`,
   teacherCreateCourse: "/teacher/create",
   teacherAnalytics: "/teacher/analytics",
   signIn: "/sign-in",

@@ -6,10 +6,17 @@ import { FetchCourseSuccessRes } from "../../api/fetch-course.api";
 import { UpdateTitleForm } from "../forms/update-title-form";
 import { BadgeBar } from "../teacher-course/badge-bar";
 import { UpdateDescriptionForm } from "../forms/update-description-form";
-import { UpdateCourseCoverImage } from "../forms/update-course-cover-form";
-import { UpdateCourseCategoryForm } from "../forms/update-course-category-form";
-import { DashboardOutlined, MoneyOutlined } from "@mui/icons-material";
+import {
+  DashboardOutlined,
+  FilePresentOutlined,
+  ListOutlined,
+  MoneyOutlined,
+} from "@mui/icons-material";
 import { CoursePriceForm } from "../forms/course-price-form";
+import { CourseChaptersSection } from "../teacher-course/course-chapters-section";
+import { CourseAttachmentsSection } from "../teacher-course/course-attachments-section";
+import { CourseCoverImageSection } from "../teacher-course/course-cover-image-section";
+import { CourseCategorySection } from "../teacher-course/course-category-section";
 
 type TeacherCoursePageViewProps = {
   course: FetchCourseSuccessRes["data"];
@@ -33,11 +40,11 @@ export function TeacherCoursePageView({ course }: TeacherCoursePageViewProps) {
               defaultDescription={course.description}
               courseId={course.id}
             />
-            <UpdateCourseCoverImage
+            <CourseCoverImageSection
               defaultImageUrl={course.imageUrl}
               courseId={course.id}
             />
-            <UpdateCourseCategoryForm
+            <CourseCategorySection
               defaultCategoryId={course.categoryId}
               courseId={course.id}
             />
@@ -45,11 +52,24 @@ export function TeacherCoursePageView({ course }: TeacherCoursePageViewProps) {
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
           <Stack sx={{ gap: 2 }}>
-            <>TODO: add chapters here</>
+            <Stack sx={{ gap: 2 }}>
+              <BadgeBar icon={ListOutlined} label="Course chapters" />
+              <CourseChaptersSection
+                defaultChapters={course.chapters}
+                courseId={course.id}
+              />
+            </Stack>
             <Stack sx={{ gap: 2 }}>
               <BadgeBar icon={MoneyOutlined} label="Sell your course" />
               <CoursePriceForm
                 defaultPrice={course.price}
+                courseId={course.id}
+              />
+            </Stack>
+            <Stack sx={{ gap: 2 }}>
+              <BadgeBar icon={FilePresentOutlined} label="Add attachments" />
+              <CourseAttachmentsSection
+                defaultAttachments={course.attachments}
                 courseId={course.id}
               />
             </Stack>

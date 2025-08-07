@@ -2,7 +2,7 @@
 import z from "zod";
 import { handleError, ValidationException } from "@/lib/exceptions";
 import { updateCourseSchema, UpdateCourseSchema } from "../lib/schema";
-import { SuccessMutateRes } from "../lib/type-utils";
+import { SuccessMutateRes } from "../../../lib/type-utils";
 import { updateCourseService } from "../services/update-course.service";
 import { revalidateTag } from "next/cache";
 

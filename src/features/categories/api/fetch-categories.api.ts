@@ -2,7 +2,7 @@ import { handleError, ValidationException } from "@/lib/exceptions";
 import { getCategoriesSchema, GetCategoriesSchema } from "../lib/schema";
 import z from "zod";
 import { getCategoriesService } from "../services/get-categories.service";
-import { SuccessFindRes } from "@/features/courses/lib/type-utils";
+import { SuccessFindRes } from "@/lib/type-utils";
 
 async function handleFetchingCategories(input: GetCategoriesSchema) {
   const {
@@ -26,6 +26,7 @@ export async function fetchCategories(input: GetCategoriesSchema) {
   try {
     return await handleFetchingCategories(input);
   } catch (error) {
+    console.log(error);
     return handleError(error);
   }
 }

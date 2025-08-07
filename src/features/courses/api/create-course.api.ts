@@ -3,7 +3,7 @@ import z from "zod";
 import { handleError, ValidationException } from "@/lib/exceptions";
 import { createCourseSchema, CreateCourseSchema } from "../lib/schema";
 import { createCourseService } from "../services/create-course.service";
-import { SuccessMutateRes } from "../lib/type-utils";
+import { SuccessMutateRes } from "../../../lib/type-utils";
 
 async function handleCreatingCourse(input: CreateCourseSchema) {
   const {

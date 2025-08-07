@@ -14,16 +14,16 @@ import { useUpdateCourse } from "../../hooks/use-update-course";
 import { useSnackbar } from "@/components/providers/snackbar-provider";
 import { useRouter } from "next/navigation";
 
-type UpdateCourseCategoryFormProps = {
+type CourseCategorySectionProps = {
   defaultCategoryId: FetchCourseSuccessRes["data"]["categoryId"];
   courseId: FetchCourseSuccessRes["data"]["id"];
 };
 
-export function UpdateCourseCategoryForm({
+export function CourseCategorySection({
   defaultCategoryId,
   courseId,
-}: UpdateCourseCategoryFormProps) {
-  const [category, setCategory] = React.useState(defaultCategoryId);
+}: CourseCategorySectionProps) {
+  const [category, setCategory] = React.useState(defaultCategoryId ?? "");
   const [isEditing, setIsEditing] = React.useState(false);
   const { showSnackbar } = useSnackbar();
   const router = useRouter();

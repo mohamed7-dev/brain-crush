@@ -12,3 +12,10 @@ export type SuccessMutateRes<D = null> = {
   data: D;
   statusCode: number;
 };
+
+export type AsyncActionCallback<D, E> = {
+  onMutate?: () => Promise<void> | void;
+  onSuccess?: (data?: D) => Promise<void> | void;
+  onError?: (error?: E) => Promise<void> | void;
+  onSettled?: () => Promise<void> | void;
+};

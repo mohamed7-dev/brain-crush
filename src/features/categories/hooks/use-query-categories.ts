@@ -1,32 +1,36 @@
 "use client";
+import {
+  useInfiniteQuery,
+  useSuspenseInfiniteQuery,
+} from "@tanstack/react-query";
 import { queryCacheKeys } from "@/lib/query-client";
 import { APIRoutes } from "@/lib/routes";
-import { useInfiniteQuery } from "@tanstack/react-query";
 import {
   FetchCategoriesErrorRes,
   FetchCategoriesSuccessRes,
 } from "../api/fetch-categories.api";
 
 export function useQueryCategories(query?: string) {
-  return useInfiniteQuery({
+  return useSuspenseInfiniteQuery({
     queryKey: queryCacheKeys.categories,
     queryFn: async ({ pageParam }: { pageParam?: number }) => {
-      const res = await fetch(
+      let res;
+      const serverRes = await fetch(
         APIRoutes.getCategories(
           `${!!pageParam ? "page=" + pageParam : ""}${
             !!query ? "&query=" + query : ""
           }`
         )
       );
-      if (!res.ok)
+      if (!serverRes.ok)
         throw new Error("Something went wrong while fetching categories!");
 
-      const data = (await res.json()) as
+      res = (await serverRes.json()) as
         | FetchCategoriesErrorRes
         | FetchCategoriesSuccessRes;
 
-      if ("error" in data) throw res;
-      return data;
+      if ("error" in res) throw res;
+      return res;
     },
     initialPageParam: undefined,
     getNextPageParam: (lastPage) => lastPage.nextCursor,

@@ -62,7 +62,7 @@ function logErrorToService(error: unknown) {
 
 export const handleError = <C extends object>(err: unknown) => {
   // Log the error to an external service or internal logging system
-  logErrorToService(err);
+  // logErrorToService(err);
   if (err instanceof HttpException) {
     return {
       error: true,

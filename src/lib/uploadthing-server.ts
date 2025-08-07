@@ -18,6 +18,11 @@ export const ourFileRouter = {
     .onUploadComplete((file) => {
       console.log({ file: file.file });
     }),
+  courseAttachments: f(["text", "image", "pdf", "video", "audio"])
+    .middleware(async ({ req }) => await auth(req))
+    .onUploadComplete((file) => {
+      console.log({ file: file.file });
+    }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;
