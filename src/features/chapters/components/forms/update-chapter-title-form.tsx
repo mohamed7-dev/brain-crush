@@ -1,37 +1,38 @@
 "use client";
 import React from "react";
-import { EditOutlined } from "@mui/icons-material";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import { FetchCourseSuccessRes } from "../../api/fetch-course.api";
+import { FetchChapterSuccessRes } from "../../api/fetch-chapter.api";
 import { Controller, useForm } from "react-hook-form";
-import TextField from "@mui/material/TextField";
-import {
-  UpdateCourseTitleSchema,
-  updateCourseTitleSchema,
-} from "../../lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  updateChapterTitleSchema,
+  UpdateChapterTitleSchema,
+} from "../../lib/schema";
 import { useSnackbar } from "@/components/providers/snackbar-provider";
 import { useRouter } from "next/navigation";
-import { useUpdateCourse } from "../../hooks/use-update-course";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import { EditOutlined } from "@mui/icons-material";
+import TextField from "@mui/material/TextField";
+import { useUpdateChapter } from "../../hooks/use-update-chapter";
 
-type UpdateTitleFormProps = {
-  defaultTitle: FetchCourseSuccessRes["data"]["title"];
-  courseId: FetchCourseSuccessRes["data"]["id"];
+type UpdateChapterTitleFormProps = {
+  defaultTitle: FetchChapterSuccessRes["data"]["title"];
+  chapterId: FetchChapterSuccessRes["data"]["id"];
+  courseId: FetchChapterSuccessRes["data"]["courseId"];
 };
-
-export function UpdateTitleForm({
+export function UpdateChapterTitleForm({
+  chapterId,
   defaultTitle,
   courseId,
-}: UpdateTitleFormProps) {
-  const updateCourseTitleForm = useForm<UpdateCourseTitleSchema>({
+}: UpdateChapterTitleFormProps) {
+  const updateChapterTitleForm = useForm<UpdateChapterTitleSchema>({
     defaultValues: {
       title: defaultTitle,
-      courseId,
+      id: chapterId,
     },
-    resolver: zodResolver(updateCourseTitleSchema),
+    resolver: zodResolver(updateChapterTitleSchema),
   });
   const { showSnackbar } = useSnackbar();
   const router = useRouter();
@@ -40,25 +41,26 @@ export function UpdateTitleForm({
 
   const toggleEdit = () => setIsEditing((current) => !current);
 
-  const { mutateAsync: updateCourse, isPending: isUpdating } = useUpdateCourse({
-    onSuccess: (data) => {
-      showSnackbar({ message: data.message, severity: "success" });
-      router.refresh();
-      updateCourseTitleForm.reset({ title: data.data.title });
-    },
-    onError: (error) => {
-      showSnackbar({ message: error.message, severity: "error" });
-      updateCourseTitleForm.reset();
-    },
-  });
+  const { mutateAsync: updateChapter, isPending: isUpdating } =
+    useUpdateChapter({
+      onSuccess: (data) => {
+        showSnackbar({ message: data.message, severity: "success" });
+        router.refresh();
+        updateChapterTitleForm.reset({ title: data.data.title });
+      },
+      onError: (error) => {
+        showSnackbar({ message: error.message, severity: "error" });
+        updateChapterTitleForm.reset();
+      },
+    });
 
-  const onSubmit = async (values: UpdateCourseTitleSchema) => {
-    await updateCourse({
-      dataToUpdate: { title: values.title },
-      courseId: values.courseId,
+  const onSubmit = async (values: UpdateChapterTitleSchema) => {
+    await updateChapter({
+      data: { title: values.title },
+      courseId,
+      id: values.id,
     });
   };
-
   return (
     <Box
       sx={{
@@ -72,7 +74,7 @@ export function UpdateTitleForm({
         sx={{ justifyContent: "space-between", alignItems: "center" }}
       >
         <Typography component={"p"} variant="subtitle2">
-          Course title
+          Chapter title
         </Typography>
         <Button
           variant="outlined"
@@ -92,21 +94,21 @@ export function UpdateTitleForm({
           <Stack
             component="form"
             autoComplete="off"
-            onSubmit={updateCourseTitleForm.handleSubmit(onSubmit)}
+            onSubmit={updateChapterTitleForm.handleSubmit(onSubmit)}
             sx={{ gap: "2" }}
           >
             <Controller
               name="title"
-              control={updateCourseTitleForm.control}
+              control={updateChapterTitleForm.control}
               render={({ field }) => (
                 <TextField
                   variant="outlined"
                   margin="normal"
-                  error={!!updateCourseTitleForm.formState.errors.title}
+                  error={!!updateChapterTitleForm.formState.errors.title}
                   fullWidth
                   disabled={isUpdating}
                   helperText={
-                    updateCourseTitleForm.formState.errors.title?.message
+                    updateChapterTitleForm.formState.errors.title?.message
                   }
                   {...field}
                 />
@@ -119,7 +121,7 @@ export function UpdateTitleForm({
               loading={isUpdating}
               loadingPosition="start"
               disabled={
-                updateCourseTitleForm.watch("title") === defaultTitle ||
+                updateChapterTitleForm.watch("title") === defaultTitle ||
                 isUpdating
               }
             >

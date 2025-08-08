@@ -1,7 +1,7 @@
 import { db } from "@/server/db";
 import { CreateAttachmentSchema } from "../lib/schema";
 import { HttpException } from "@/lib/exceptions";
-import { ownerOnly } from "@/features/me";
+import { ownerOnly } from "@/features/me/lib/authorization";
 import { attachmentsTable } from "@/server/db/schema";
 
 export async function createAttachmentService(input: CreateAttachmentSchema) {

@@ -1,3 +1,4 @@
+import "server-only";
 import { handleError, ValidationException } from "@/lib/exceptions";
 import { getCategoriesSchema, GetCategoriesSchema } from "../lib/schema";
 import z from "zod";

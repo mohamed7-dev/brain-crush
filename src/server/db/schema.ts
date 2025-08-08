@@ -156,4 +156,12 @@ export const chaptersRelations = relations(chaptersTable, ({ one }) => ({
     fields: [chaptersTable.courseId],
     references: [coursesTable.id],
   }),
+  muxData: one(muxDataTable),
+}));
+
+export const muxDataRelations = relations(muxDataTable, ({ one }) => ({
+  course: one(chaptersTable, {
+    fields: [muxDataTable.chapterId],
+    references: [chaptersTable.id],
+  }),
 }));

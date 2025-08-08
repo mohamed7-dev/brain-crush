@@ -4,6 +4,8 @@ import { handleError, ValidationException } from "@/lib/exceptions";
 import { deleteAttachmentSchema, DeleteAttachmentSchema } from "../lib/schema";
 import { SuccessMutateRes } from "../../../lib/type-utils";
 import { deleteAttachmentService } from "../services/delete-attachment.service";
+import { revalidatePath } from "next/cache";
+import { routes } from "@/lib/routes";
 
 async function handleDeletingAttachment(input: DeleteAttachmentSchema) {
   const {
@@ -13,6 +15,8 @@ async function handleDeletingAttachment(input: DeleteAttachmentSchema) {
   } = deleteAttachmentSchema.safeParse(input);
   if (!success) throw new ValidationException(z.treeifyError(error));
   const deletedRes = await deleteAttachmentService(parsedData);
+  revalidatePath(routes.teacherCourse(parsedData.courseId));
+
   return {
     success: true,
     statusCode: 200,

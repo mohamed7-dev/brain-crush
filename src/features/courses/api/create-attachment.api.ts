@@ -4,7 +4,8 @@ import { handleError, ValidationException } from "@/lib/exceptions";
 import { createAttachmentSchema, CreateAttachmentSchema } from "../lib/schema";
 import { SuccessMutateRes } from "../../../lib/type-utils";
 import { createAttachmentService } from "../services/create-attachment.service";
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
+import { routes } from "@/lib/routes";
 
 async function handleCreatingAttachment(input: CreateAttachmentSchema) {
   const {
@@ -14,7 +15,8 @@ async function handleCreatingAttachment(input: CreateAttachmentSchema) {
   } = createAttachmentSchema.safeParse(input);
   if (!success) throw new ValidationException(z.treeifyError(error));
   const newAttachment = await createAttachmentService(parsedData);
-  revalidateTag("course");
+  revalidatePath(routes.teacherCourse(parsedData.courseId));
+
   return {
     success: true,
     statusCode: 201,

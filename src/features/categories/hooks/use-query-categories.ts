@@ -1,8 +1,5 @@
 "use client";
-import {
-  useInfiniteQuery,
-  useSuspenseInfiniteQuery,
-} from "@tanstack/react-query";
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { queryCacheKeys } from "@/lib/query-client";
 import { APIRoutes } from "@/lib/routes";
 import {

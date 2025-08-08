@@ -1,3 +1,5 @@
+import "server-only";
+
 import { HttpException } from "@/lib/exceptions";
 import { auth } from "@clerk/nextjs/server";
 

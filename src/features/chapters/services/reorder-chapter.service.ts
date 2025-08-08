@@ -1,7 +1,7 @@
 import { db } from "@/server/db";
 import { ReorderChapterSchema } from "../lib/schema";
 import { HttpException } from "@/lib/exceptions";
-import { ownerOnly, userOnly } from "@/features/me";
+import { ownerOnly, userOnly } from "@/features/me/lib/authorization";
 import { eq } from "drizzle-orm";
 import { chaptersTable } from "@/server/db/schema";
 

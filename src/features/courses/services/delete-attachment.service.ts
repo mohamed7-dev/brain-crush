@@ -2,7 +2,7 @@ import { db } from "@/server/db";
 import { DeleteAttachmentSchema } from "../lib/schema";
 import { attachmentsTable } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
-import { ownerOnly } from "@/features/me";
+import { ownerOnly } from "@/features/me/lib/authorization";
 import { HttpException } from "@/lib/exceptions";
 import { UTApi } from "uploadthing/server";
 

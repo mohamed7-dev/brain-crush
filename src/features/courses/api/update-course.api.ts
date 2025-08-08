@@ -4,7 +4,8 @@ import { handleError, ValidationException } from "@/lib/exceptions";
 import { updateCourseSchema, UpdateCourseSchema } from "../lib/schema";
 import { SuccessMutateRes } from "../../../lib/type-utils";
 import { updateCourseService } from "../services/update-course.service";
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
+import { routes } from "@/lib/routes";
 
 async function handleUpdatingCourse(input: UpdateCourseSchema) {
   const {
@@ -14,7 +15,8 @@ async function handleUpdatingCourse(input: UpdateCourseSchema) {
   } = updateCourseSchema.safeParse(input);
   if (!success) throw new ValidationException(z.treeifyError(error));
   const updatedCourse = await updateCourseService(parsedData);
-  revalidateTag("course");
+  revalidatePath(routes.teacherCourse(parsedData.courseId));
+
   return {
     success: true,
     statusCode: 200,

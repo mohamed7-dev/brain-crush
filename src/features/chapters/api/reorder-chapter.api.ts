@@ -3,8 +3,9 @@ import { handleError, ValidationException } from "@/lib/exceptions";
 import { reorderChapterSchema, ReorderChapterSchema } from "../lib/schema";
 import z from "zod";
 import { SuccessMutateRes } from "@/lib/type-utils";
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { reorderChapterService } from "../services/reorder-chapter.service";
+import { routes } from "@/lib/routes";
 
 async function handleReorderingChapter(input: ReorderChapterSchema) {
   const {
@@ -14,7 +15,8 @@ async function handleReorderingChapter(input: ReorderChapterSchema) {
   } = reorderChapterSchema.safeParse(input);
   if (!success) throw new ValidationException(z.treeifyError(error));
   const reorderedChapters = await reorderChapterService(parsedData);
-  revalidateTag("course");
+  revalidatePath(routes.teacherCourse(parsedData.courseId));
+
   return {
     success: true,
     statusCode: 200,

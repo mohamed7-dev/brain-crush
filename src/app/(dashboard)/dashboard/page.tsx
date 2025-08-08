@@ -1,10 +1,10 @@
-import { routes } from "@/lib/routes";
-import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 import React from "react";
+import { routes } from "@/lib/routes";
+import { redirect } from "next/navigation";
+import { userOnly } from "@/features/me/lib/authorization";
 
 export default async function DashboardPage() {
-  const { userId } = await auth();
+  const { userId } = await userOnly();
 
   if (!userId) {
     return redirect(routes.home);

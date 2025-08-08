@@ -17,7 +17,7 @@ export const createCourseSchema = insertCourseSchema
 export type CreateCourseSchema = z.infer<typeof createCourseSchema>;
 
 export const getCourseSchema = z.object({
-  id: z.uuid({ error: "Invalid id" }).trim(),
+  id: z.uuid({ error: "Invalid id" }),
 });
 
 export type GetCourseSchema = z.infer<typeof getCourseSchema>;

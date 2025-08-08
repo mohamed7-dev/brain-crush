@@ -1,7 +1,7 @@
 import { db } from "@/server/db";
 import { CreateCourseSchema } from "../lib/schema";
 import { coursesTable } from "@/server/db/schema";
-import { userOnly } from "@/features/me";
+import { userOnly } from "@/features/me/lib/authorization";
 
 export async function createCourseService(input: CreateCourseSchema) {
   const { userId } = await userOnly();

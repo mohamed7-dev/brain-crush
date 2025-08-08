@@ -4,17 +4,17 @@ import { VideoCallOutlined } from "@mui/icons-material";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import {
-  CreateChapterErrorRes,
-  CreateChapterForm,
-  CreateChapterSuccessRes,
-  useReorderChapter,
-} from "@/features/chapters";
 import { FetchCourseSuccessRes } from "../../api/fetch-course.api";
 import { useSnackbar } from "@/components/providers/snackbar-provider";
 import { useRouter } from "next/navigation";
 import { CourseChaptersList } from "./course-chapters-list";
 import { routes } from "@/lib/routes";
+import {
+  CreateChapterErrorRes,
+  CreateChapterSuccessRes,
+} from "@/features/chapters/api/create-chapter.api";
+import { useReorderChapter } from "@/features/chapters/hooks/use-reorder-chapter";
+import { CreateChapterForm } from "@/features/chapters/components/create-chapter-form";
 
 type ChaptersSectionProps = {
   defaultChapters: FetchCourseSuccessRes["data"]["chapters"];

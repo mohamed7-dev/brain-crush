@@ -4,7 +4,8 @@ import { createChapterSchema, CreateChapterSchema } from "../lib/schema";
 import z from "zod";
 import { createChapterService } from "../services/create-chapter.service";
 import { SuccessMutateRes } from "@/lib/type-utils";
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
+import { routes } from "@/lib/routes";
 
 async function handleCreatingChapter(input: CreateChapterSchema) {
   const {
@@ -14,10 +15,10 @@ async function handleCreatingChapter(input: CreateChapterSchema) {
   } = createChapterSchema.safeParse(input);
   if (!success) throw new ValidationException(z.treeifyError(error));
   const newChapter = await createChapterService(parsedData);
-  revalidateTag("course");
+  revalidatePath(routes.teacherCourse(parsedData.courseId));
   return {
     success: true,
-    statusCode: 200,
+    statusCode: 201,
     message: "Course chapter has been created successfully.",
     data: newChapter,
   } satisfies SuccessMutateRes<typeof newChapter>;

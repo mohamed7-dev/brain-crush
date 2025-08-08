@@ -3,9 +3,9 @@ import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import { TeacherCoursePageHeader } from "../teacher-course/teacher-course-page-header";
 import { FetchCourseSuccessRes } from "../../api/fetch-course.api";
-import { UpdateTitleForm } from "../forms/update-title-form";
-import { BadgeBar } from "../teacher-course/badge-bar";
-import { UpdateDescriptionForm } from "../forms/update-description-form";
+import { UpdateCourseTitleForm } from "../forms/update-course-title-form";
+import { BadgeBar } from "@/components/badge-bar";
+import { UpdateCourseDescriptionForm } from "../forms/update-course-description-form";
 import {
   DashboardOutlined,
   FilePresentOutlined,
@@ -35,8 +35,11 @@ export function TeacherCoursePageView({ course }: TeacherCoursePageViewProps) {
         <Grid size={{ xs: 12, md: 6 }}>
           <BadgeBar icon={DashboardOutlined} label="Customize your course" />
           <Stack sx={{ gap: 2, mt: 4 }}>
-            <UpdateTitleForm defaultTitle={course.title} courseId={course.id} />
-            <UpdateDescriptionForm
+            <UpdateCourseTitleForm
+              defaultTitle={course.title}
+              courseId={course.id}
+            />
+            <UpdateCourseDescriptionForm
               defaultDescription={course.description}
               courseId={course.id}
             />
