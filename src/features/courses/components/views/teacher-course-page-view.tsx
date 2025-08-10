@@ -44,8 +44,9 @@ export function TeacherCoursePageView({ course }: TeacherCoursePageViewProps) {
               courseId={course.id}
             />
             <CourseCoverImageSection
-              defaultImageUrl={course.imageUrl}
+              cover={course.cover}
               courseId={course.id}
+              title={course.title}
             />
             <CourseCategorySection
               defaultCategoryId={course.categoryId}

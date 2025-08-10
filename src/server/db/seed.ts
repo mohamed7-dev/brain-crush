@@ -1,16 +1,14 @@
-import { db } from "./index";
-import { categoriesTable } from "./schema";
+import { seedCategoriesService } from "@/features/categories/services/seed-categories.service";
 
 export async function main() {
-  try {
-    return await db
-      .insert(categoriesTable)
-      .values([{ name: "Computer Science" }, { name: "Engineering" }])
-      .then(() => console.log("Categories have been inserted successfully!"));
-  } catch (error) {
-    console.log("Error inserting categories", error);
-  }
+  return await seedCategoriesService();
 }
 main()
-  .then(() => console.log("Database has been seeded successfully!"))
-  .catch(() => console.log("Error seeding database", Error));
+  .then(() => {
+    console.log("Database has been seeded successfully!");
+    process.exit(0);
+  })
+  .catch(() => {
+    console.log("Error seeding database", Error);
+    process.exit(1);
+  });

@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { FileUploader } from "@/components/file-uploader";
 import {
   AttachFileOutlined,
   DeleteOutlined,
@@ -15,7 +14,11 @@ import { useCreateAttachment } from "../../hooks/use-create-attachment";
 import { useSnackbar } from "@/components/providers/snackbar-provider";
 import { useRouter } from "next/navigation";
 import { useDeleteAttachment } from "../../hooks/use-delete-attachment";
-import { ClientUploadedFileData } from "uploadthing/types";
+import {
+  CloudinaryUploadWidgetInfo,
+  CloudinaryUploadWidgetResults,
+} from "next-cloudinary";
+import { UploadWidget } from "@/components/upload-widget";
 
 type CourseAttachmentsSectionProps = {
   defaultAttachments: FetchCourseSuccessRes["data"]["attachments"];
@@ -44,19 +47,22 @@ export function CourseAttachmentsSection({
       },
     });
 
-  const handleCreatingAttachment = async (
-    file: ClientUploadedFileData<null>
-  ) => {
-    if (file) {
-      await createAttachment({
-        courseId,
-        url: file.ufsUrl,
-        name: file.name,
-        size: file.size,
-        type: file.type,
-        key: file.key,
-      });
-    }
+  const onUploadingSuccess = async (file: CloudinaryUploadWidgetResults) => {
+    const resource = file.info as CloudinaryUploadWidgetInfo;
+    await createAttachment({
+      asset: {
+        name: resource.original_filename,
+        publicId: resource.public_id,
+        bytes: resource.bytes,
+        type: resource.type,
+        assetType: "Binary",
+        width: resource.width,
+        height: resource.height,
+        secureURL: resource.secure_url,
+        version: resource.version.toString(),
+      },
+      courseId,
+    });
   };
 
   const { mutateAsync: deleteAttachment, isPending: isDeletingAttachment } =
@@ -73,15 +79,10 @@ export function CourseAttachmentsSection({
         setDeletingId(null);
       },
     });
-  const handleDeletingAttachment = async ({
-    id,
-    fileKey,
-  }: {
-    id: string;
-    fileKey: string;
-  }) => {
+
+  const handleDeletingAttachment = async (id: string) => {
     setDeletingId(id);
-    await deleteAttachment({ id, courseId, fileKey });
+    await deleteAttachment({ id, courseId });
   };
   return (
     <Stack
@@ -124,7 +125,7 @@ export function CourseAttachmentsSection({
               <Stack direction={"row"} sx={{ gap: 1, alignItems: "center" }}>
                 <FilePresentOutlined />
                 <Typography component={"p"} variant="body2">
-                  {attachment.name}
+                  {attachment.asset.name}
                 </Typography>
               </Stack>
               {deletingId === attachment.id && (
@@ -132,12 +133,7 @@ export function CourseAttachmentsSection({
               )}
               {deletingId !== attachment.id && (
                 <IconButton
-                  onClick={() =>
-                    handleDeletingAttachment({
-                      id: attachment.id,
-                      fileKey: attachment.key,
-                    })
-                  }
+                  onClick={() => handleDeletingAttachment(attachment.id)}
                 >
                   <DeleteOutlined />
                 </IconButton>
@@ -149,12 +145,29 @@ export function CourseAttachmentsSection({
 
       {isEditing && (
         <Stack sx={{ gap: 2 }}>
-          <FileUploader
-            endpoint="courseAttachments"
-            onChange={async (file) => {
-              await handleCreatingAttachment(file);
+          <UploadWidget
+            widgetProps={{
+              options: {
+                sources: ["local"],
+                multiple: false,
+                maxFiles: 1,
+                resourceType: "auto",
+                clientAllowedFormats: [
+                  "jpg",
+                  "jpeg",
+                  "png",
+                  "mp4",
+                  "mkv",
+                  "mp3",
+                  "pdf",
+                  "txt",
+                  "docx",
+                  "pptx",
+                ],
+              },
+
+              onSuccess: (result) => onUploadingSuccess(result),
             }}
-            onUploadError={(message) => console.log(message)}
           />
           <Typography variant="subtitle2">
             Add any file that helps your students to complete the course.

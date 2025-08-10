@@ -7,7 +7,7 @@ export async function getChapterService(input: GetChapterSchema) {
   const foundChapter = await db.query.chaptersTable.findFirst({
     where: (t, { eq }) => eq(t.id, input.id),
     with: {
-      muxData: true,
+      video: true,
       course: {
         columns: {
           creatorId: true,

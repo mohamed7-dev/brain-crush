@@ -1,3 +1,4 @@
+import { createAssetSchema } from "@/features/assets/lib/schema";
 import z from "zod";
 
 export const createChapterSchema = z.object({
@@ -79,3 +80,10 @@ export const updateChapterAccessSchema = updateChapterSchema
 export type UpdateChapterAccessSchema = z.infer<
   typeof updateChapterAccessSchema
 >;
+
+export const updateChapterVideoSchema = z.object({
+  id: updateChapterSchema.shape.id,
+  courseId: updateChapterSchema.shape.courseId,
+  asset: createAssetSchema,
+});
+export type UpdateChapterVideoSchema = z.infer<typeof updateChapterVideoSchema>;

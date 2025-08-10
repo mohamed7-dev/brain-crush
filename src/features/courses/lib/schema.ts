@@ -1,6 +1,7 @@
 import z from "zod";
 import { createInsertSchema, createUpdateSchema } from "drizzle-zod";
 import { attachmentsTable, coursesTable } from "@/server/db/schema";
+import { createAssetSchema } from "@/features/assets/lib/schema";
 
 const insertCourseSchema = createInsertSchema(coursesTable);
 
@@ -26,6 +27,7 @@ export const updateCourseSchema = z.object({
   dataToUpdate: createUpdateSchema(coursesTable).omit({
     id: true,
     createdAt: true,
+    coverId: true,
   }),
   courseId: z.uuid().trim(),
 });
@@ -52,25 +54,7 @@ export type UpdateCourseDescriptionSchema = z.infer<
 >;
 
 export const updateCourseCoverSchema = z.object({
-  coverImage: updateCourseSchema.shape.dataToUpdate
-    .pick({
-      imageUrl: true,
-      imageKey: true,
-      imageName: true,
-      imageSize: true,
-      imageType: true,
-    })
-    .refine(
-      (data) =>
-        data.imageUrl !== null &&
-        data.imageKey !== null &&
-        data.imageName !== null &&
-        data.imageSize !== null &&
-        data.imageType !== null,
-      {
-        message: "All image fields must be non-null",
-      }
-    ),
+  coverImage: createAssetSchema,
   courseId: updateCourseSchema.shape.courseId,
 });
 
@@ -85,20 +69,28 @@ export const updateCoursePriceSchema = z.object({
 
 export type UpdateCoursePriceSchema = z.infer<typeof updateCoursePriceSchema>;
 
-export const createAttachmentSchema = createInsertSchema(attachmentsTable).omit(
-  {
-    id: true,
+const insertAttachmentSchema = createInsertSchema(attachmentsTable, {
+  courseId: z.uuidv4({ error: "Invalid course id" }).trim(),
+  assetId: z.uuidv4({ error: "Invalid asset id" }).trim(),
+  id: z.uuidv4({ error: "Invalid asset id" }).trim(),
+});
+
+export const createAttachmentSchema = insertAttachmentSchema
+  .omit({
     createdAt: true,
     updatedAt: true,
-  }
-);
+    assetId: true,
+    id: true,
+  })
+  .extend({
+    asset: createAssetSchema,
+  });
 
 export type CreateAttachmentSchema = z.infer<typeof createAttachmentSchema>;
 
-export const deleteAttachmentSchema = z.object({
-  id: z.uuid().trim(),
-  courseId: z.uuid().trim(),
-  fileKey: createAttachmentSchema.shape.key,
+export const deleteAttachmentSchema = insertAttachmentSchema.pick({
+  courseId: true,
+  id: true,
 });
 
 export type DeleteAttachmentSchema = z.infer<typeof deleteAttachmentSchema>;

@@ -15,6 +15,7 @@ import {
 import { UpdateChapterTitleForm } from "../forms/update-chapter-title-form";
 import { UpdateChapterDescriptionForm } from "../forms/update-chapter-description-form";
 import { UpdateChapterAccessForm } from "../forms/update-chapter-access-form";
+import { ChapterVideoSection } from "../sections/chapter-video-section";
 
 type ChapterPageViewProps = {
   chapter: FetchChapterSuccessRes["data"];
@@ -64,8 +65,14 @@ export function ChapterPageView({ chapter }: ChapterPageViewProps) {
           </Stack>
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
-          <BadgeBar icon={VideoLibraryOutlined} label="Add a video" />
-          <>video upload section</>
+          <Stack sx={{ gap: 2 }}>
+            <BadgeBar icon={VideoLibraryOutlined} label="Add a video" />
+            <ChapterVideoSection
+              video={chapter.video}
+              chapterId={chapter.id}
+              courseId={chapter.courseId}
+            />
+          </Stack>
         </Grid>
       </Grid>
     </Stack>

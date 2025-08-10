@@ -8,10 +8,15 @@ export async function getCourseService(input: GetCourseSchema) {
   const foundCourse = await db.query.coursesTable.findFirst({
     where: eq(coursesTable.id, input.id),
     with: {
-      attachments: true,
+      attachments: {
+        with: {
+          asset: true,
+        },
+      },
       chapters: {
         orderBy: asc(chaptersTable.position),
       },
+      cover: true,
     },
   });
 

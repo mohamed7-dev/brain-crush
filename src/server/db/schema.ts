@@ -1,9 +1,12 @@
 import { relations, sql } from "drizzle-orm";
 import {
   boolean,
+  decimal,
   index,
   integer,
+  pgEnum,
   pgTable,
+  primaryKey,
   real,
   text,
   timestamp,
@@ -16,6 +19,8 @@ const timestamps = {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 };
+
+export const assetTypeEnum = pgEnum("asset_type", ["Image", "Video", "Binary"]);
 
 export const categoriesTable = pgTable(
   "categories",
@@ -34,11 +39,9 @@ export const coursesTable = pgTable(
     title: text("title").notNull(),
     creatorId: text("creator_id").notNull(),
     description: text("description"),
-    imageUrl: text("image_url"),
-    imageName: text("image_name"),
-    imageType: text("image_type"),
-    imageSize: real("image_size"),
-    imageKey: text("image_key"),
+    coverId: uuid("cover_id").references(() => assetsTable.id, {
+      onDelete: "set null",
+    }),
     price: real("price"),
     isPublished: boolean("is_published").notNull().default(false),
     categoryId: uuid("category_id").references(() => categoriesTable.id, {
@@ -59,17 +62,17 @@ export const attachmentsTable = pgTable(
   "attachments",
   {
     id: uuid("id").primaryKey().defaultRandom().notNull(),
-    name: text("name").notNull(),
-    url: text("url").notNull(),
-    type: text("type").notNull(),
-    size: real("size").notNull(),
-    key: text("key").notNull(),
+    assetId: uuid("asset_id")
+      .references(() => assetsTable.id, {
+        onDelete: "cascade",
+      })
+      .notNull(),
     courseId: uuid("course_id")
       .references(() => coursesTable.id, { onDelete: "cascade" })
       .notNull(),
     ...timestamps,
   },
-  (t) => [index().on(t.courseId)]
+  (t) => [index().on(t.courseId), index().on(t.assetId)]
 );
 
 export const chaptersTable = pgTable(
@@ -78,10 +81,12 @@ export const chaptersTable = pgTable(
     id: uuid("id").primaryKey().defaultRandom().notNull(),
     title: text("title").notNull(),
     description: text("description"),
-    videoUrl: text("video_url"),
     position: integer("position").notNull(),
     isPublished: boolean("is_published").notNull().default(false),
     isFree: boolean("is_free").notNull().default(false),
+    videoId: uuid("video_id").references(() => assetsTable.id, {
+      onDelete: "set null",
+    }),
     courseId: uuid("course_id")
       .references(() => coursesTable.id, { onDelete: "cascade" })
       .notNull(),
@@ -90,19 +95,21 @@ export const chaptersTable = pgTable(
   (t) => [index().on(t.courseId)]
 );
 
-export const muxDataTable = pgTable(
-  "mux_data",
-  {
-    id: uuid("id").primaryKey().defaultRandom().notNull(),
-    assetId: text("asset_id").notNull(),
-    playbackId: text("playback_id"),
-    chapterId: uuid("chapter_id")
-      .references(() => chaptersTable.id, { onDelete: "cascade" })
-      .notNull(),
-    ...timestamps,
-  },
-  (t) => [index().on(t.chapterId)]
-);
+export const assetsTable = pgTable("assets", {
+  id: uuid("id").primaryKey().defaultRandom().notNull(),
+  assetType: assetTypeEnum("asset_type").notNull(),
+  publicId: text("public_id").notNull(),
+  name: text("name").notNull(),
+  type: text("type").notNull(),
+  format: text("format").default("raw").notNull(),
+  version: text("version").notNull(),
+  secureURL: text("secure_url").notNull(),
+  bytes: real("bytes"),
+  duration: decimal("duration", { precision: 2 }),
+  width: integer("width"),
+  height: integer("height"),
+  ...timestamps,
+});
 
 export const userProgressTable = pgTable(
   "user_progress",
@@ -139,9 +146,18 @@ export const stripeCustomersTable = pgTable("stripe_customers", {
 });
 
 // RELATIONS
-export const coursesRelations = relations(coursesTable, ({ many }) => ({
+export const coursesRelations = relations(coursesTable, ({ many, one }) => ({
   attachments: many(attachmentsTable),
   chapters: many(chaptersTable),
+  purchases: many(purchasesTable),
+  cover: one(assetsTable, {
+    fields: [coursesTable.coverId],
+    references: [assetsTable.id],
+  }),
+  category: one(categoriesTable, {
+    fields: [coursesTable.categoryId],
+    references: [categoriesTable.id],
+  }),
 }));
 
 export const attachmentsRelations = relations(attachmentsTable, ({ one }) => ({
@@ -149,19 +165,47 @@ export const attachmentsRelations = relations(attachmentsTable, ({ one }) => ({
     fields: [attachmentsTable.courseId],
     references: [coursesTable.id],
   }),
+  asset: one(assetsTable, {
+    fields: [attachmentsTable.assetId],
+    references: [assetsTable.id],
+  }),
 }));
 
-export const chaptersRelations = relations(chaptersTable, ({ one }) => ({
+export const chaptersRelations = relations(chaptersTable, ({ one, many }) => ({
   course: one(coursesTable, {
     fields: [chaptersTable.courseId],
     references: [coursesTable.id],
   }),
-  muxData: one(muxDataTable),
+  video: one(assetsTable, {
+    fields: [chaptersTable.videoId],
+    references: [assetsTable.id],
+  }),
+  progresses: many(userProgressTable),
 }));
 
-export const muxDataRelations = relations(muxDataTable, ({ one }) => ({
-  course: one(chaptersTable, {
-    fields: [muxDataTable.chapterId],
-    references: [chaptersTable.id],
+export const assetsRelations = relations(assetsTable, ({ one }) => ({
+  course: one(coursesTable),
+  chapter: one(chaptersTable),
+  attachment: one(attachmentsTable),
+}));
+
+export const categoriesRelations = relations(categoriesTable, ({ many }) => ({
+  courses: many(coursesTable),
+}));
+
+export const purchasesRelations = relations(purchasesTable, ({ one }) => ({
+  course: one(coursesTable, {
+    fields: [purchasesTable.courseId],
+    references: [coursesTable.id],
   }),
 }));
+
+export const userProgressRelations = relations(
+  userProgressTable,
+  ({ one }) => ({
+    chapter: one(chaptersTable, {
+      fields: [userProgressTable.chapterId],
+      references: [chaptersTable.id],
+    }),
+  })
+);

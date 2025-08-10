@@ -1,35 +1,36 @@
 "use client";
 import React from "react";
-import {
-  EditOutlined,
-  ImageOutlined,
-  AddAPhotoOutlined,
-} from "@mui/icons-material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { useRouter } from "next/navigation";
-import { FetchCourseSuccessRes } from "../../api/fetch-course.api";
-import { useSnackbar } from "@/components/providers/snackbar-provider";
-import { UploadWidget } from "@/components/upload-widget";
+import { FetchChapterSuccessRes } from "../../api/fetch-chapter.api";
 import {
-  CldImage,
-  CloudinaryUploadWidgetInfo,
+  EditOutlined,
+  VideoCallOutlined,
+  VideoFileOutlined,
+} from "@mui/icons-material";
+import { useRouter } from "next/navigation";
+import { useSnackbar } from "@/components/providers/snackbar-provider";
+import { useUpdateChapterVideo } from "../../hooks/use-update-chapter-video";
+import {
   CloudinaryUploadWidgetResults,
+  CloudinaryUploadWidgetInfo,
+  CldVideoPlayer,
 } from "next-cloudinary";
-import { useUpdateCourseCover } from "../../hooks/use-update-course-cover";
+import { UploadWidget } from "@/components/upload-widget";
+import "next-cloudinary/dist/cld-video-player.css";
 
-type CourseCoverImageSectionProps = {
-  cover: FetchCourseSuccessRes["data"]["cover"];
-  title: FetchCourseSuccessRes["data"]["title"];
-  courseId: string;
+type ChapterVideoSectionProps = {
+  chapterId: FetchChapterSuccessRes["data"]["id"];
+  courseId: FetchChapterSuccessRes["data"]["courseId"];
+  video: FetchChapterSuccessRes["data"]["video"];
 };
-export function CourseCoverImageSection({
+export function ChapterVideoSection({
+  video,
+  chapterId,
   courseId,
-  cover,
-  title,
-}: CourseCoverImageSectionProps) {
+}: ChapterVideoSectionProps) {
   const [isEditing, setIsEditing] = React.useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -38,36 +39,38 @@ export function CourseCoverImageSection({
 
   const { showSnackbar } = useSnackbar();
 
-  const { mutateAsync: updateCourseCover } = useUpdateCourseCover({
+  const { mutateAsync: updateChapterVideo } = useUpdateChapterVideo({
     onSuccess: (data) => {
       showSnackbar({ message: data.message, severity: "success" });
       router.refresh();
       toggleEdit();
     },
     onError: (error) => {
+      console.log(error);
       showSnackbar({ message: error.message, severity: "error" });
     },
   });
 
   const onUploadingSuccess = async (file: CloudinaryUploadWidgetResults) => {
     const resource = file.info as CloudinaryUploadWidgetInfo;
-    await updateCourseCover({
-      coverImage: {
+    await updateChapterVideo({
+      asset: {
         name: resource.original_filename,
         publicId: resource.public_id,
         bytes: resource.bytes,
+        duration: (resource?.duration as number).toString() ?? undefined,
         type: resource.type,
-        assetType: "Image",
+        assetType: "Video",
         width: resource.width,
         height: resource.height,
         secureURL: resource.secure_url,
         version: resource.version.toString(),
         format: resource.format,
       },
+      id: chapterId,
       courseId,
     });
   };
-
   return (
     <Stack
       sx={{
@@ -82,13 +85,13 @@ export function CourseCoverImageSection({
         sx={{ justifyContent: "space-between", alignItems: "center" }}
       >
         <Typography component={"p"} variant="subtitle2">
-          Course cover
+          Chapter video
         </Typography>
         <Button
           variant="outlined"
           startIcon={
-            isEditing ? undefined : !cover ? (
-              <AddAPhotoOutlined />
+            isEditing ? undefined : !video ? (
+              <VideoCallOutlined />
             ) : (
               <EditOutlined />
             )
@@ -96,41 +99,40 @@ export function CourseCoverImageSection({
           onClick={toggleEdit}
         >
           {isEditing && "Cancel"}
-          {!isEditing && !cover && "Add cover"}
-          {!isEditing && cover && "Edit cover"}
+          {!isEditing && !video && "Add video"}
+          {!isEditing && video && "Edit video"}
         </Button>
       </Stack>
-      {!isEditing &&
-        (!cover ? (
-          <Stack
-            sx={{
-              rounded: 2,
-              height: 200,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              p: 2,
-              gap: 1,
-            }}
-          >
-            <ImageOutlined sx={{ height: 40, width: 40 }} />
-            <Typography component={"p"} variant="body1">
-              No Image Uploaded, yet!
-            </Typography>
-          </Stack>
-        ) : (
-          <Box sx={{ position: "relative", aspectRatio: "16/9", mt: 2 }}>
-            <CldImage
-              src={cover.publicId}
-              alt={`cover image of the course ${title}`}
-              fill
-              style={{
-                objectFit: "cover",
-                borderRadius: "inherit",
-              }}
-            />
-          </Box>
-        ))}
+      {!isEditing && !video && (
+        <Stack
+          sx={{
+            rounded: 2,
+            height: 200,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            p: 2,
+            gap: 1,
+          }}
+        >
+          <VideoFileOutlined sx={{ height: 40, width: 40 }} />
+          <Typography component={"p"} variant="body1">
+            No Video Uploaded, yet!
+          </Typography>
+        </Stack>
+      )}
+      {!isEditing && video && (
+        <Box sx={{ position: "relative", mt: 2 }}>
+          <CldVideoPlayer
+            src={video.publicId}
+            width={video.width!}
+            height={400}
+            showJumpControls
+            controls
+            // transformation={{ format: "auto" }}
+          />
+        </Box>
+      )}
 
       {isEditing && (
         <Stack sx={{ gap: 2 }}>
@@ -140,13 +142,14 @@ export function CourseCoverImageSection({
                 sources: ["local"],
                 multiple: false,
                 maxFiles: 1,
-                resourceType: "image",
+                resourceType: "video",
+                clientAllowedFormats: ["mp4", "mkv"],
               },
               onSuccess: (result) => onUploadingSuccess(result),
             }}
           />
           <Typography variant="subtitle2">
-            16:9 aspect ratio is recommended
+            Upload this chapter&apos;s video
           </Typography>
         </Stack>
       )}

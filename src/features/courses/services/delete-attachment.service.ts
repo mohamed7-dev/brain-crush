@@ -1,12 +1,10 @@
 import { db } from "@/server/db";
 import { DeleteAttachmentSchema } from "../lib/schema";
-import { attachmentsTable } from "@/server/db/schema";
+import { assetsTable } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { ownerOnly } from "@/features/me/lib/authorization";
 import { HttpException } from "@/lib/exceptions";
-import { UTApi } from "uploadthing/server";
-
-export const utapi = new UTApi();
+import cloudinary from "@/config/cloudinary.config";
 
 export async function deleteAttachmentService(input: DeleteAttachmentSchema) {
   const foundCourse = await db.query.coursesTable.findFirst({
@@ -17,9 +15,20 @@ export async function deleteAttachmentService(input: DeleteAttachmentSchema) {
     foundCourse.creatorId,
     "Forbidden: You are not allowed to delete the attachment."
   );
+
+  const foundAttachment = await db.query.attachmentsTable.findFirst({
+    where: (t, { eq }) => eq(t.id, input.id),
+    with: {
+      asset: true,
+    },
+  });
+  if (!foundAttachment) throw HttpException.NotFound("Attachment not found.");
+
   await Promise.all([
-    utapi.deleteFiles([input.fileKey]),
-    db.delete(attachmentsTable).where(eq(attachmentsTable.id, input.id)),
+    cloudinary.uploader.destroy(foundAttachment.asset.publicId, {
+      resource_type: "raw",
+    }),
+    db.delete(assetsTable).where(eq(assetsTable.id, foundAttachment.assetId)),
   ]);
 
   return { done: true, resourceId: input.id };

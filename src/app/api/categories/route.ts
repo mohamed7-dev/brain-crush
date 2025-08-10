@@ -1,7 +1,5 @@
-import { fetchCategories } from "@/features/categories";
+import { fetchCategories } from "@/features/categories/api/fetch-categories.api";
 import { NextRequest, NextResponse } from "next/server";
-
-export const runtime = "nodejs";
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
