@@ -39,4 +39,5 @@ export function getQueryClient() {
 
 export const queryCacheKeys = {
   categories: ["categories"],
+  courses: ["courses"],
 };

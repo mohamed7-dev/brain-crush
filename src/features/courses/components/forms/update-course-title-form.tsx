@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSnackbar } from "@/components/providers/snackbar-provider";
 import { useRouter } from "next/navigation";
 import { useUpdateCourse } from "../../hooks/use-update-course";
+import { RequiredSuperscript } from "@/components/required-superscript";
 
 type UpdateTitleFormProps = {
   defaultTitle: FetchCourseSuccessRes["data"]["title"];
@@ -73,6 +74,7 @@ export function UpdateCourseTitleForm({
       >
         <Typography component={"p"} variant="subtitle2">
           Course title
+          <RequiredSuperscript />
         </Typography>
         <Button
           variant="outlined"

@@ -91,7 +91,8 @@ export function CourseChaptersList({
                       )}
                       <Chip
                         label={chapter.isPublished ? "Published" : "Draft"}
-                        variant={chapter.isPublished ? undefined : "outlined"}
+                        color={chapter.isPublished ? "info" : undefined}
+                        variant="outlined"
                       />
                       <IconButton
                         disabled={isReorderingActive}

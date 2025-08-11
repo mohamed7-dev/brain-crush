@@ -17,6 +17,7 @@ import {
   updateChapterDescriptionSchema,
   UpdateChapterDescriptionSchema,
 } from "../../lib/schema";
+import { RequiredSuperscript } from "@/components/required-superscript";
 
 type UpdateChapterDescriptionFormProps = {
   defaultDescription: FetchChapterSuccessRes["data"]["description"];
@@ -77,6 +78,7 @@ export function UpdateChapterDescriptionForm({
       >
         <Typography component={"p"} variant="subtitle2">
           Chapter description
+          <RequiredSuperscript />
         </Typography>
         <Button
           variant="outlined"

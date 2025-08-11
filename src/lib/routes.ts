@@ -18,4 +18,6 @@ const APP_BASE_URL =
 export const APIRoutes = {
   getCategories: (searchParams?: string) =>
     `${APP_BASE_URL}/api/categories${searchParams ? "?" + searchParams : ""}`,
+  getCourses: (searchParams?: string) =>
+    `${APP_BASE_URL}/api/courses${searchParams ? "?" + searchParams : ""}`,
 };

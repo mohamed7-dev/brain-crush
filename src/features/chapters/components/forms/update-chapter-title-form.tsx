@@ -16,6 +16,7 @@ import Button from "@mui/material/Button";
 import { EditOutlined } from "@mui/icons-material";
 import TextField from "@mui/material/TextField";
 import { useUpdateChapter } from "../../hooks/use-update-chapter";
+import { RequiredSuperscript } from "@/components/required-superscript";
 
 type UpdateChapterTitleFormProps = {
   defaultTitle: FetchChapterSuccessRes["data"]["title"];
@@ -75,6 +76,7 @@ export function UpdateChapterTitleForm({
       >
         <Typography component={"p"} variant="subtitle2">
           Chapter title
+          <RequiredSuperscript />
         </Typography>
         <Button
           variant="outlined"

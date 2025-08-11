@@ -10,7 +10,6 @@ import { customSurfaceComponents } from "./custom-surface-components";
 import { customNavigationComponents } from "./custom-navigation-components";
 import { customFeedbackComponents } from "./custom-feedback-components";
 import { customDataDisplayComponents } from "./custom-data-display-components";
-import { customDataGridComponents } from "./custom-data-grid-components";
 
 export const theme = createTheme({
   cssVariables: {
@@ -28,6 +27,5 @@ export const theme = createTheme({
     ...customNavigationComponents,
     ...customFeedbackComponents,
     ...customDataDisplayComponents,
-    ...customDataGridComponents,
   },
 });

@@ -94,3 +94,22 @@ export const deleteAttachmentSchema = insertAttachmentSchema.pick({
 });
 
 export type DeleteAttachmentSchema = z.infer<typeof deleteAttachmentSchema>;
+
+export const deleteCourseSchema = updateCourseSchema.pick({
+  courseId: true,
+});
+
+export type DeleteCourseSchema = z.infer<typeof deleteCourseSchema>;
+
+export const getCoursesSchema = z.object({
+  cursor: z
+    .object({
+      updatedAt: z.date(),
+      id: z.uuidv4({ error: "Invalid course id" }).trim(),
+    })
+    .optional(),
+  limit: z.number().min(1).max(100).optional(),
+  query: z.string().min(1).optional(),
+});
+
+export type GetCoursesSchema = z.infer<typeof getCoursesSchema>;

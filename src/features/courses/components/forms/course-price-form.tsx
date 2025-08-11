@@ -17,6 +17,7 @@ import TextField from "@mui/material/TextField";
 import { useUpdateCourse } from "../../hooks/use-update-course";
 import { useSnackbar } from "@/components/providers/snackbar-provider";
 import { useRouter } from "next/navigation";
+import { RequiredSuperscript } from "@/components/required-superscript";
 
 type CoursePriceFormProps = {
   defaultPrice: FetchCourseSuccessRes["data"]["price"];
@@ -72,6 +73,7 @@ export function CoursePriceForm({
       >
         <Typography component={"p"} variant="subtitle2">
           Course price
+          <RequiredSuperscript />
         </Typography>
         <Button
           variant="outlined"

@@ -87,3 +87,10 @@ export const updateChapterVideoSchema = z.object({
   asset: createAssetSchema,
 });
 export type UpdateChapterVideoSchema = z.infer<typeof updateChapterVideoSchema>;
+
+export const deleteChapterSchema = z.object({
+  chapterId: updateChapterSchema.shape.id,
+  courseId: updateChapterSchema.shape.courseId,
+});
+
+export type DeleteChapterSchema = z.infer<typeof deleteChapterSchema>;

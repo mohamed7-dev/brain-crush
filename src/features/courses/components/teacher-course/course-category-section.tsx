@@ -13,6 +13,7 @@ import { EditOutlined } from "@mui/icons-material";
 import { useUpdateCourse } from "../../hooks/use-update-course";
 import { useSnackbar } from "@/components/providers/snackbar-provider";
 import { useRouter } from "next/navigation";
+import { RequiredSuperscript } from "@/components/required-superscript";
 
 type CourseCategorySectionProps = {
   defaultCategoryId: FetchCourseSuccessRes["data"]["categoryId"];
@@ -62,6 +63,7 @@ export function CourseCategorySection({
       >
         <Typography component={"p"} variant="subtitle2">
           Course category
+          <RequiredSuperscript />
         </Typography>
         <Button
           variant="outlined"

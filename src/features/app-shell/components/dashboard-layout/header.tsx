@@ -47,7 +47,7 @@ export function Header() {
             sx={{
               display: { xs: "none", md: "flex" },
               alignItems: "center",
-              gap: "4px",
+              gap: 2,
             }}
           >
             <TeacherModeButton />

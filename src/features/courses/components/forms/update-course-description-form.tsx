@@ -17,6 +17,7 @@ import { outlinedInputClasses } from "@mui/material";
 import { useSnackbar } from "@/components/providers/snackbar-provider";
 import { useRouter } from "next/navigation";
 import { useUpdateCourse } from "../../hooks/use-update-course";
+import { RequiredSuperscript } from "@/components/required-superscript";
 
 type UpdateDescriptionFormProps = {
   defaultDescription: FetchCourseSuccessRes["data"]["description"];
@@ -73,6 +74,7 @@ export function UpdateCourseDescriptionForm({
       >
         <Typography component={"p"} variant="subtitle2">
           Course description
+          <RequiredSuperscript />
         </Typography>
         <Button
           variant="outlined"

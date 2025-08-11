@@ -20,6 +20,7 @@ import {
 } from "next-cloudinary";
 import { UploadWidget } from "@/components/upload-widget";
 import "next-cloudinary/dist/cld-video-player.css";
+import { RequiredSuperscript } from "@/components/required-superscript";
 
 type ChapterVideoSectionProps = {
   chapterId: FetchChapterSuccessRes["data"]["id"];
@@ -86,6 +87,7 @@ export function ChapterVideoSection({
       >
         <Typography component={"p"} variant="subtitle2">
           Chapter video
+          <RequiredSuperscript />
         </Typography>
         <Button
           variant="outlined"
@@ -122,14 +124,15 @@ export function ChapterVideoSection({
         </Stack>
       )}
       {!isEditing && video && (
-        <Box sx={{ position: "relative", mt: 2 }}>
+        <Box sx={{ mt: 2 }}>
           <CldVideoPlayer
             src={video.publicId}
             width={video.width!}
             height={400}
             showJumpControls
             controls
-            // transformation={{ format: "auto" }}
+            sourceTypes={["hls", "dash"]}
+            transformation={{ streaming_profile: "hd" }}
           />
         </Box>
       )}

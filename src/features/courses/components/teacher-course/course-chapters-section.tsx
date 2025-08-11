@@ -15,6 +15,7 @@ import {
 } from "@/features/chapters/api/create-chapter.api";
 import { useReorderChapter } from "@/features/chapters/hooks/use-reorder-chapter";
 import { CreateChapterForm } from "@/features/chapters/components/create-chapter-form";
+import { RequiredSuperscript } from "@/components/required-superscript";
 
 type ChaptersSectionProps = {
   defaultChapters: FetchCourseSuccessRes["data"]["chapters"];
@@ -72,7 +73,7 @@ export function CourseChaptersSection({
         bgcolor: "background.paper",
         p: 2,
         borderRadius: 1.5,
-        gap: 4,
+        gap: 2,
       }}
     >
       <Stack
@@ -81,6 +82,7 @@ export function CourseChaptersSection({
       >
         <Typography component={"p"} variant="subtitle2">
           Course chapters
+          <RequiredSuperscript>*(Publish one chapter)</RequiredSuperscript>
         </Typography>
         <Button
           variant="outlined"

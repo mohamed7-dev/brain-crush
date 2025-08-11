@@ -1,6 +1,8 @@
 import { Components, Theme, alpha } from "@mui/material/styles";
 import { brand, gray } from "./primitives";
 import {
+  buttonClasses,
+  circularProgressClasses,
   outlinedInputClasses,
   svgIconClasses,
   toggleButtonClasses,
@@ -69,6 +71,10 @@ export const customButtonComponents: Components<Theme> = {
               "&:active": {
                 backgroundColor: gray[800],
               },
+              "&:disabled": {
+                color: "white",
+                opacity: "80%",
+              },
               ...theme.applyStyles("dark", {
                 color: "black",
                 backgroundColor: gray[50],
@@ -82,6 +88,10 @@ export const customButtonComponents: Components<Theme> = {
                 },
                 "&:active": {
                   backgroundColor: gray[400],
+                },
+                "&:disabled": {
+                  color: gray[900],
+                  opacity: "80%",
                 },
               }),
             },
@@ -217,6 +227,25 @@ export const customButtonComponents: Components<Theme> = {
                 },
                 "&:active": {
                   backgroundColor: alpha(brand[900], 0.3),
+                },
+              }),
+            },
+          },
+          {
+            props: {
+              variant: "contained",
+              color: "primary",
+              loading: true,
+            },
+            style: {
+              color: theme.palette.grey[200],
+              [`& .${buttonClasses.loadingIndicator}`]: {
+                color: theme.palette.grey[200],
+              },
+              ...theme.applyStyles("dark", {
+                color: theme.palette.grey[700],
+                [`& .${buttonClasses.loadingIndicator}`]: {
+                  color: theme.palette.grey[700],
                 },
               }),
             },

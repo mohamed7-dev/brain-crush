@@ -19,6 +19,7 @@ import {
   CloudinaryUploadWidgetResults,
 } from "next-cloudinary";
 import { useUpdateCourseCover } from "../../hooks/use-update-course-cover";
+import { RequiredSuperscript } from "@/components/required-superscript";
 
 type CourseCoverImageSectionProps = {
   cover: FetchCourseSuccessRes["data"]["cover"];
@@ -83,6 +84,7 @@ export function CourseCoverImageSection({
       >
         <Typography component={"p"} variant="subtitle2">
           Course cover
+          <RequiredSuperscript />
         </Typography>
         <Button
           variant="outlined"

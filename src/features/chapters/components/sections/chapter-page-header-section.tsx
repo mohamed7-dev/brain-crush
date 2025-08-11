@@ -1,8 +1,18 @@
+"use client";
 import React from "react";
 import { FetchChapterSuccessRes } from "../../api/fetch-chapter.api";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import { useUpdateChapter } from "../../hooks/use-update-chapter";
+import { useSnackbar } from "@/components/providers/snackbar-provider";
+import { useRouter } from "next/navigation";
+import { useDeleteChapter } from "../../hooks/use-delete-chapter";
+import { routes } from "@/lib/routes";
+import { AlertDialog } from "@/components/alert-dialog";
+import { DeleteOutlineOutlined, RemoveOutlined } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
 
 type ChapterPagePageHeaderProps = {
   chapter: FetchChapterSuccessRes["data"];
@@ -10,14 +20,56 @@ type ChapterPagePageHeaderProps = {
 export function ChapterPageHeaderSection({
   chapter,
 }: ChapterPagePageHeaderProps) {
-  const requiredFields = [chapter.title, chapter.description, chapter.videoUrl];
+  const requiredFields = [chapter.title, chapter.description, chapter.video];
 
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
 
   const completionText = `(${completedFields}/${totalFields})`;
   const isComplete = requiredFields.every(Boolean);
+  const { showSnackbar } = useSnackbar();
+  const router = useRouter();
+  const { mutateAsync: updateChapter, isPending } = useUpdateChapter({
+    onSuccess: (data) => {
+      showSnackbar({ message: data.message, severity: "success" });
+      router.refresh();
+    },
+    onError: (error) => {
+      showSnackbar({ message: error.message, severity: "error" });
+    },
+  });
+  const handlePublishing = async () => {
+    if (chapter.isPublished) {
+      await updateChapter({
+        data: { isPublished: false },
+        id: chapter.id,
+        courseId: chapter.courseId,
+      });
+    } else {
+      await updateChapter({
+        data: { isPublished: true },
+        id: chapter.id,
+        courseId: chapter.courseId,
+      });
+    }
+  };
+  const { mutateAsync: deleteChapter, isPending: isDeleting } =
+    useDeleteChapter({
+      onSuccess: (data) => {
+        showSnackbar({ message: data.message, severity: "success" });
+        router.push(routes.teacherCourse(data.data.courseId));
+      },
+      onError: (error) => {
+        showSnackbar({ message: error.message, severity: "error" });
+      },
+    });
 
+  const handleDeletion = async () => {
+    await deleteChapter({
+      chapterId: chapter.id,
+      courseId: chapter.courseId,
+    });
+  };
   return (
     <Stack
       direction={"row"}
@@ -31,7 +83,34 @@ export function ChapterPageHeaderSection({
           Complete all fields {completionText}
         </Typography>
       </Box>
-      <Box>publish</Box>
+      <Stack direction={"row"} sx={{ alignItems: "center", gap: 2 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          loading={isPending}
+          loadingPosition="start"
+          onClick={handlePublishing}
+          disabled={!isComplete || isPending}
+        >
+          {!isPending
+            ? chapter.isPublished
+              ? "Unpublish"
+              : "Publish"
+            : "Pending"}
+        </Button>
+        <AlertDialog
+          onConfirm={handleDeletion}
+          TriggerButton={
+            <IconButton
+              color="secondary"
+              loading={isDeleting}
+              disabled={isDeleting}
+            >
+              <DeleteOutlineOutlined />
+            </IconButton>
+          }
+        />
+      </Stack>
     </Stack>
   );
 }
