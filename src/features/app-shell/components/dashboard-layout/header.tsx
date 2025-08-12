@@ -9,6 +9,9 @@ import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import { TeacherModeButton } from "../teacher-mode-button";
 import { AuthButton } from "../auth-button";
+import { SearchBox } from "@/features/app-shell/components/dashboard-layout/search-box";
+import Box from "@mui/material/Box";
+import { Logo } from "../logo";
 
 export function Header() {
   const [open, setOpen] = React.useState(false);
@@ -41,7 +44,12 @@ export function Header() {
             width: "100%",
           }}
         >
-          <p>search bar</p>
+          <Box sx={{ display: { xs: "block", md: "none" } }}>
+            <Logo />
+          </Box>
+          <Box sx={{ display: { xs: "none", md: "block" } }}>
+            <SearchBox />
+          </Box>
           <Stack
             direction={"row"}
             sx={{
@@ -53,7 +61,6 @@ export function Header() {
             <TeacherModeButton />
             <AuthButton />
           </Stack>
-          {/* <p>settings overlay goes here dropdown/drawer</p>  */}
           <Badge
             color="error"
             variant="dot"

@@ -40,4 +40,6 @@ export function getQueryClient() {
 export const queryCacheKeys = {
   categories: ["categories"],
   courses: ["courses"],
+  browseCourses: ["courses", "browse"],
+  studentPurchasedCourses: ["courses", "purchased", "student"],
 };

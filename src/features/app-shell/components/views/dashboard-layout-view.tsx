@@ -4,6 +4,7 @@ import { Header } from "../dashboard-layout/header";
 import Box from "@mui/material/Box";
 import { alpha } from "@mui/material/styles";
 import { Sidebar } from "../dashboard-layout/sidebar";
+import { SearchBox } from "@/features/app-shell/components/dashboard-layout/search-box";
 
 type DashboardLayoutViewProps = {
   children: React.ReactNode;
@@ -24,6 +25,9 @@ export function DashboardLayoutView({ children }: DashboardLayoutViewProps) {
         })}
       >
         <Header />
+        <Box sx={{ display: { xs: "block", md: "none" }, p: 1 }}>
+          <SearchBox />
+        </Box>
         {children}
       </Box>
     </Box>

@@ -58,6 +58,8 @@ export const coursesTable = pgTable(
   ]
 );
 
+export type SelectCourse = typeof coursesTable.$inferSelect;
+
 export const attachmentsTable = pgTable(
   "attachments",
   {

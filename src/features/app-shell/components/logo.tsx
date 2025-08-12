@@ -2,46 +2,38 @@ import Box from "@mui/material/Box";
 import Image from "next/image";
 import LogoImage from "@/public/logo.svg";
 import Typography from "@mui/material/Typography";
-import Stack from "@mui/material/Stack";
 import { routes } from "@/lib/routes";
-import Link from "@mui/material/Link";
+import { Button } from "@mui/material";
 
 export function Logo() {
   return (
-    <Link
+    <Button
       href={routes.home}
-      sx={{ textDecoration: "none", "&::before": { width: "0%" } }}
+      sx={{ alignItems: "center", gap: 1, px: 2, py: 4 }}
     >
-      <Stack
-        direction="row"
-        spacing={1}
-        sx={{ justifyContent: "center", mr: "auto" }}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          alignSelf: "center",
+        }}
       >
-        <Box
-          sx={{
-            borderRadius: "999px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            alignSelf: "center",
-          }}
-        >
-          <Image
-            src={LogoImage}
-            alt="logo"
-            width={40}
-            height={40}
-            className="object-contain"
-          />
-        </Box>
-        <Typography
-          variant="h4"
-          component="h1"
-          sx={{ color: "text.primary", textDecoration: "none" }}
-        >
-          BrainCrush
-        </Typography>
-      </Stack>
-    </Link>
+        <Image
+          src={LogoImage}
+          alt="logo"
+          width={40}
+          height={40}
+          className="object-contain"
+        />
+      </Box>
+      <Typography
+        variant="h4"
+        component="h1"
+        sx={{ color: "text.primary", textDecoration: "none" }}
+      >
+        BrainCrush
+      </Typography>
+    </Button>
   );
 }

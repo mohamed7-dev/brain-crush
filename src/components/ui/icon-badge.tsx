@@ -22,7 +22,7 @@ export const sizeValues = {
   },
   sm: {
     padding: 4,
-    iconSize: 16,
+    iconSize: 20,
   },
 } as const;
 

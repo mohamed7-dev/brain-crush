@@ -1,1 +1,2 @@
 export const GET_COURSES_DEFAULT_LIMIT = 10;
+export const BROWSE_COURSES_DEFAULT_LIMIT = 10;

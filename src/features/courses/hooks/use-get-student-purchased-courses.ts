@@ -4,13 +4,15 @@ import { queryCacheKeys } from "@/lib/query-client";
 import { APIRoutes } from "@/lib/routes";
 import { GetCoursesSchema } from "../lib/schema";
 import {
-  FetchCoursesErrorRes,
-  FetchCoursesSuccessRes,
-} from "../api/fetch-courses.api";
+  FetchStudentPurchasedCoursesErrorRes,
+  FetchStudentPurchasedCoursesSuccessRes,
+} from "../api/fetch-student-purchased-courses.api";
 
-export function useGetCourses({ query }: GetCoursesSchema) {
+export function useGetStudentPurchasedCourses({
+  query,
+}: Pick<GetCoursesSchema, "query">) {
   return useSuspenseInfiniteQuery({
-    queryKey: [...queryCacheKeys.courses, query ?? ""],
+    queryKey: queryCacheKeys.studentPurchasedCourses,
     queryFn: async ({
       pageParam,
     }: {
@@ -18,9 +20,9 @@ export function useGetCourses({ query }: GetCoursesSchema) {
     }) => {
       let res;
       const serverRes = await fetch(
-        APIRoutes.getCourses(
+        APIRoutes.getStudentPurchasedCourses(
           `${!!pageParam ? "cursor=" + JSON.stringify(pageParam) : ""}${
-            !!query ? (!!pageParam ? "&" : "" + "query=" + query) : ""
+            !!query ? "&query=" + query : ""
           }`
         )
       );
@@ -28,8 +30,8 @@ export function useGetCourses({ query }: GetCoursesSchema) {
         throw new Error("Something went wrong while fetching courses!");
 
       res = (await serverRes.json()) as
-        | FetchCoursesSuccessRes
-        | FetchCoursesErrorRes;
+        | FetchStudentPurchasedCoursesErrorRes
+        | FetchStudentPurchasedCoursesSuccessRes;
 
       if ("error" in res) throw res;
       return res;

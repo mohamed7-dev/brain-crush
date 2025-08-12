@@ -113,3 +113,19 @@ export const getCoursesSchema = z.object({
 });
 
 export type GetCoursesSchema = z.infer<typeof getCoursesSchema>;
+
+export const browseCoursesSchema = getCoursesSchema
+  .pick({
+    limit: true,
+    query: true,
+  })
+  .extend({
+    cursor: z
+      .object({
+        createdAt: z.date(),
+        id: z.uuidv4({ error: "Invalid course id" }).trim(),
+      })
+      .optional(),
+  });
+
+export type BrowseCoursesSchema = z.infer<typeof browseCoursesSchema>;
