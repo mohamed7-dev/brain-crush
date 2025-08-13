@@ -1,7 +1,7 @@
 import "server-only";
 
 import { HttpException } from "@/lib/exceptions";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 
 export async function ownerOnly(ownerId: string, message?: string) {
   const authObject = await auth();
@@ -16,5 +16,6 @@ export async function userOnly(message?: string) {
   if (!authObject || !authObject.userId) {
     throw HttpException.Unauthorized(message ?? "Unauthorized");
   }
-  return authObject;
+  const user = await currentUser();
+  return { ...authObject, user };
 }

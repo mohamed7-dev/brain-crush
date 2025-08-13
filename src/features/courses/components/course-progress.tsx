@@ -1,4 +1,11 @@
-import { Box, LinearProgress, Stack, Typography } from "@mui/material";
+import { green } from "@/lib/theme/primitives";
+import {
+  Box,
+  LinearProgress,
+  linearProgressClasses,
+  Stack,
+  Typography,
+} from "@mui/material";
 
 type CourseProgressProps = {
   value: number;
@@ -12,8 +19,11 @@ export function CourseProgress({ value, variant, size }: CourseProgressProps) {
       <Box sx={{ width: "100%", mr: 1 }}>
         <LinearProgress
           variant="determinate"
-          color={variant === "default" ? "info" : "success"}
+          // color={variant === "default" ? "primary" : "secondary"}
           value={value}
+          sx={{
+            [`& .${linearProgressClasses.colorPrimary}`]: { color: green[50] },
+          }}
         />
       </Box>
       <Box sx={{ minWidth: 35 }}>

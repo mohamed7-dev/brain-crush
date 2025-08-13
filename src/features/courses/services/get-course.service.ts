@@ -1,7 +1,7 @@
 import { HttpException } from "@/lib/exceptions";
 import { db } from "@/server/db";
 import { chaptersTable, coursesTable } from "@/server/db/schema";
-import { asc, desc, eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { GetCourseSchema } from "../lib/schema";
 
 export async function getCourseService(input: GetCourseSchema) {

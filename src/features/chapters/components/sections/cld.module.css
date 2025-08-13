@@ -1,0 +1,6 @@
+.container {
+  width: 400px;
+  height: 1rem;
+  aspect-ratio: "16/9";
+  object-fit: contain;
+}

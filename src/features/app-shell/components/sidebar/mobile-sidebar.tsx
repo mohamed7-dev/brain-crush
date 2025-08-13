@@ -4,7 +4,7 @@ import Divider from "@mui/material/Divider";
 import Drawer, { drawerClasses } from "@mui/material/Drawer";
 import Stack from "@mui/material/Stack";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
-import { SidebarMenuContent } from "./sidebar-menu-content";
+import { SidebarMenuContent } from "../dashboard-layout/sidebar-menu-content";
 import { TeacherModeButton } from "../teacher-mode-button";
 import { SidebarFooter } from "./sidebar-footer";
 import { Logo } from "../logo";
@@ -12,9 +12,14 @@ import { Logo } from "../logo";
 type MobileSidebarProps = {
   open: boolean | undefined;
   toggleDrawer: (newOpen: boolean) => () => void;
+  children: React.ReactNode;
 };
 
-export function MobileSidebar({ open, toggleDrawer }: MobileSidebarProps) {
+export function MobileSidebar({
+  open,
+  toggleDrawer,
+  children,
+}: MobileSidebarProps) {
   return (
     <Drawer
       anchor="right"
@@ -35,27 +40,13 @@ export function MobileSidebar({ open, toggleDrawer }: MobileSidebarProps) {
           height: "100%",
         }}
       >
-        {/* <Stack
-            direction="row"
-            sx={{ gap: 1, alignItems: "center", flexGrow: 1, p: 1 }}
-          >
-            <Avatar
-              sizes="small"
-              alt="Riley Carter"
-              src="/static/images/avatar/7.jpg"
-              sx={{ width: 24, height: 24 }}
-            />
-            <Typography component="p" variant="h6">
-              Riley Carter
-            </Typography>
-          </Stack> */}
         <Stack direction={"column"} sx={{ p: 2, gap: "10px" }}>
           <Logo />
           <Divider />
           <TeacherModeButton />
         </Stack>
         <Stack sx={{ flexGrow: 1 }}>
-          <SidebarMenuContent />
+          {children}
           <Divider />
         </Stack>
         <Stack sx={{ p: 2, gap: "10px" }}>

@@ -3,7 +3,7 @@ import AppBar from "@mui/material/AppBar";
 import Stack from "@mui/material/Stack";
 import { Toolbar } from "@/components/ui/styled-toolbar";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
-import { MobileSidebar } from "./mobile-sidebar";
+import { MobileSidebar } from "../sidebar/mobile-sidebar";
 import { badgeClasses } from "@mui/material/Badge";
 import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
@@ -13,7 +13,11 @@ import { SearchBox } from "@/features/app-shell/components/dashboard-layout/sear
 import Box from "@mui/material/Box";
 import { Logo } from "../logo";
 
-export function Header() {
+type HeaderProps = {
+  children: React.ReactNode;
+};
+
+export function Header({ children }: HeaderProps) {
   const [open, setOpen] = React.useState(false);
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -21,13 +25,13 @@ export function Header() {
 
   return (
     <AppBar
-      sx={{
-        position: { xs: "fixed", md: "static" },
+      sx={(theme) => ({
+        // position: { xs: "fixed", md: "static" },
+        position: "static",
         boxShadow: 0,
-        bgcolor: "background.paper",
+        backgroundColor: "background.paper",
         backgroundImage: "none",
-        top: "var(--template-frame-height, 0px)",
-      }}
+      })}
     >
       <Toolbar
         variant="regular"
@@ -78,7 +82,9 @@ export function Header() {
               <MenuRoundedIcon />
             </IconButton>
           </Badge>
-          <MobileSidebar open={open} toggleDrawer={toggleDrawer} />
+          <MobileSidebar open={open} toggleDrawer={toggleDrawer}>
+            {children}
+          </MobileSidebar>
         </Stack>
       </Toolbar>
     </AppBar>

@@ -5,7 +5,7 @@ import { HomePageCoursesSection } from "../sections/home-page-courses-section";
 
 export function HomePageView() {
   return (
-    <Stack sx={{ p: 6, gap: 6 }}>
+    <Stack sx={{ p: { md: 6, xs: 2 }, gap: 6 }}>
       <Box>Categories Carousel</Box>
       <HomePageCoursesSection />
     </Stack>

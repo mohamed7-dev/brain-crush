@@ -94,3 +94,9 @@ export const deleteChapterSchema = z.object({
 });
 
 export type DeleteChapterSchema = z.infer<typeof deleteChapterSchema>;
+
+export const getStudentChapterSchema = z.object({
+  chapterId: z.uuid({ error: "Invalid chapter id" }).trim(),
+  courseId: z.uuid({ error: "Invalid course id" }).trim(),
+});
+export type GetStudentChapterSchema = z.infer<typeof getStudentChapterSchema>;

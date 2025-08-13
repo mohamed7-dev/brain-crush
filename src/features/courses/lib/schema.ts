@@ -129,3 +129,9 @@ export const browseCoursesSchema = getCoursesSchema
   });
 
 export type BrowseCoursesSchema = z.infer<typeof browseCoursesSchema>;
+
+export const enrollUserSchema = updateCourseSchema.pick({
+  courseId: true,
+});
+
+export type EnrollUserSchema = z.infer<typeof enrollUserSchema>;

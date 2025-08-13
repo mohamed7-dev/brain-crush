@@ -1,29 +1,26 @@
 import React from "react";
-import { Drawer } from "@/components/ui/styled-drawer";
+import { Drawer, DrawerLayout } from "@/components/ui/styled-drawer";
 import Box from "@mui/material/Box";
-import { drawerClasses } from "@mui/material/Drawer";
-import { SidebarMenuContent } from "./sidebar-menu-content";
 import { Logo } from "../logo";
 import Stack from "@mui/material/Stack";
 import { SidebarFooter } from "./sidebar-footer";
 
-export function Sidebar() {
+type SidebarProps = {
+  children: React.ReactNode;
+  layout: DrawerLayout;
+};
+export function Sidebar({ children, layout }: SidebarProps) {
   return (
     <Drawer
       variant="permanent"
       sx={{
         display: { xs: "none", md: "block" },
-        [`& .${drawerClasses.paper}`]: {
-          backgroundColor: "background.paper",
-          boxShadow: 0,
-          border: 0,
-        },
       }}
+      layout={layout}
     >
       <Box
         sx={{
           display: "flex",
-          mt: "calc(var(--template-frame-height, 0px) + 4px)",
           p: 1.5,
         }}
       >
@@ -38,7 +35,7 @@ export function Sidebar() {
           flexGrow: 1,
         }}
       >
-        <SidebarMenuContent />
+        {children}
       </Box>
       <Stack sx={{ p: 2 }}>
         <SidebarFooter />

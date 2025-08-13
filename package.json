@@ -9,7 +9,8 @@
     "lint": "next lint",
     "db:push": "npx drizzle-kit push --config=./src/config/drizzle.config.ts",
     "db:studio": "npx drizzle-kit studio --config=./src/config/drizzle.config.ts",
-    "db:seed": "tsx --env-file=.env ./src/server/db/seed.ts"
+    "db:seed": "tsx --env-file=.env ./src/server/db/seed.ts",
+    "stripe:dev": "stripe listen --forward-to localhost:3000/api/webhook"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.28.1",
@@ -33,7 +34,9 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.62.0",
+    "react-quill": "^2.0.0",
     "server-only": "^0.0.1",
+    "stripe": "^18.4.0",
     "zod": "^4.0.14"
   },
   "devDependencies": {

@@ -16,7 +16,7 @@ export const fetchCoursesQueryOptions = infiniteQueryOptions({
 });
 
 export const browseCoursesQueryOptions = infiniteQueryOptions({
-  queryKey: queryCacheKeys.browseCourses,
+  queryKey: [...queryCacheKeys.browseCourses, ""],
   queryFn: async () => {
     const res = await browseCourses({});
     if ("error" in res) throw res;

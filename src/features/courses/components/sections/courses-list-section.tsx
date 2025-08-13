@@ -30,7 +30,13 @@ export function CoursesListSection({
 }: CoursesListSectionProps) {
   return (
     <Stack sx={{ gap: 4 }}>
-      <Grid container columns={13} columnGap={4}>
+      <Grid
+        container
+        columns={13}
+        columnGap={4}
+        rowGap={2}
+        justifyContent={{ xs: "center", md: "start" }}
+      >
         {courses.map((course) => (
           <Grid
             key={course.id}

@@ -21,19 +21,22 @@ export function SearchBox() {
   const handleUpdatingSearchparams = () => {
     router.push(routes.search + "?" + createQueryString("q", query));
   };
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
   return (
     <Box
       component={"form"}
       autoComplete="off"
-      sx={{ position: "relative" }}
-      onSubmit={(e) => e.preventDefault()}
+      sx={{ position: "relative", minWidth: { xs: "100%", md: 400 } }}
+      onSubmit={handleSubmit}
     >
       <TextField
         placeholder="Search for courses..."
         value={query ?? ""}
         onChange={(e) => setQuery(e.target.value)}
         sx={{
-          minWidth: { xs: "100%", md: 400 },
+          minWidth: "100%",
           flexGrow: 1,
         }}
         slotProps={{

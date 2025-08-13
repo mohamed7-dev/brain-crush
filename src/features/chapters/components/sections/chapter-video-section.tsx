@@ -19,8 +19,9 @@ import {
   CldVideoPlayer,
 } from "next-cloudinary";
 import { UploadWidget } from "@/components/upload-widget";
-import "next-cloudinary/dist/cld-video-player.css";
 import { RequiredSuperscript } from "@/components/required-superscript";
+
+import "next-cloudinary/dist/cld-video-player.css";
 
 type ChapterVideoSectionProps = {
   chapterId: FetchChapterSuccessRes["data"]["id"];
