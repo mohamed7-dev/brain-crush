@@ -15,7 +15,7 @@ export function StudentChapterBannerSection({
     <Stack>
       {chapter.progresses?.isCompleted && (
         <Alert variant="outlined" color="success">
-          You already completed this chapter.
+          You have already completed this chapter.
         </Alert>
       )}
       {isLocked && (

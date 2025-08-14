@@ -29,7 +29,6 @@ const getQueryOptions = ({ query }: Pick<BrowseCoursesSchema, "query">) => {
         )
       );
       if (!serverRes.ok) {
-        console.log(serverRes.json());
         throw new Error("Something went wrong while fetching courses!");
       }
 

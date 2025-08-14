@@ -7,6 +7,51 @@ import { BROWSE_COURSES_DEFAULT_LIMIT } from "../lib/constants";
 import { handleCursorPagination } from "@/lib/utils";
 import { and, eq, lt, notExists } from "drizzle-orm";
 
+async function getVisitorCourses(input: BrowseCoursesSchema) {
+  const { limit, query, cursor } = input;
+  const [courses, total] = await Promise.all([
+    db.query.coursesTable.findMany({
+      where: (t, { eq, and, or, lt, sql }) =>
+        and(
+          eq(t.isPublished, true),
+          cursor
+            ? or(
+                lt(t.createdAt, cursor.createdAt),
+                and(eq(t.createdAt, cursor.createdAt), lt(t.id, cursor.id))
+              )
+            : undefined,
+          query
+            ? sql`to_tsvector('english', ${t.title}) @@ plainto_tsquery('english', ${query})`
+            : undefined
+        ),
+      with: {
+        category: true,
+        chapters: {
+          columns: {
+            id: true,
+          },
+        },
+        cover: true,
+      },
+      limit: limit! + 1,
+      orderBy: (t, { desc }) => [desc(t.createdAt), desc(t.id)],
+    }),
+    db.$count(coursesTable, and(eq(coursesTable.isPublished, true))),
+  ]);
+  const { data: items, nextCursor } = handleCursorPagination({
+    data: courses,
+    limit: limit!,
+  });
+
+  return {
+    data: items,
+    total,
+    nextCursor: nextCursor
+      ? { createdAt: nextCursor?.createdAt, id: nextCursor.id }
+      : undefined,
+  };
+}
+
 export async function browseCoursesService(input: BrowseCoursesSchema) {
   const { limit, query, cursor } = input;
   const defaultLimit = limit ?? BROWSE_COURSES_DEFAULT_LIMIT;
@@ -70,10 +115,12 @@ export async function browseCoursesService(input: BrowseCoursesSchema) {
         )
       ),
     ]);
+
     const { data: items, nextCursor } = handleCursorPagination({
       data: courses,
       limit: defaultLimit,
     });
+
     return {
       data: items,
       total,
@@ -82,46 +129,8 @@ export async function browseCoursesService(input: BrowseCoursesSchema) {
         : undefined,
     };
   } catch (error) {
-    // No User Found, Fetch All Courses
     if (error instanceof HttpException && error.statusCode === 401) {
-      const [courses, total] = await Promise.all([
-        db.query.coursesTable.findMany({
-          where: (t, { eq, and, or, lt, sql }) =>
-            and(
-              eq(t.isPublished, true),
-              cursor
-                ? or(
-                    lt(t.createdAt, cursor.createdAt),
-                    and(eq(t.createdAt, cursor.createdAt), lt(t.id, cursor.id))
-                  )
-                : undefined,
-              query
-                ? sql`to_tsvector('english', ${t.title}) @@ plainto_tsquery('english', ${query})`
-                : undefined
-            ),
-          with: {
-            category: true,
-            chapters: {
-              columns: {
-                id: true,
-              },
-            },
-            cover: true,
-          },
-        }),
-        db.$count(coursesTable, and(eq(coursesTable.isPublished, true))),
-      ]);
-      const { data: items, nextCursor } = handleCursorPagination({
-        data: courses,
-        limit: defaultLimit,
-      });
-      return {
-        data: items,
-        total,
-        nextCursor: nextCursor
-          ? { createdAt: nextCursor?.createdAt, id: nextCursor.id }
-          : undefined,
-      };
+      return await getVisitorCourses({ ...input, limit: defaultLimit });
     }
     throw error;
   }

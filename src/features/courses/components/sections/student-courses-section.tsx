@@ -2,9 +2,11 @@
 import React from "react";
 import { CourseCard, CoursesListSection } from "./courses-list-section";
 import { useGetStudentPurchasedCourses } from "../../hooks/use-get-student-purchased-courses";
+import { Button } from "@mui/material";
+import { routes } from "@/lib/routes";
 
 export function StudentCoursesSection() {
-  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } =
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage, isLoading } =
     useGetStudentPurchasedCourses({});
   const coursesWithProgresses =
     data.pages.flatMap((p) => [
@@ -30,6 +32,12 @@ export function StudentCoursesSection() {
       hasNextPage={hasNextPage}
       fetchNextPage={fetchNextPage}
       isFetchingNextPage={isFetchingNextPage}
+      isLoading={isLoading}
+      NoCoursesAction={
+        <Button href={routes.home} variant="outlined">
+          Start here
+        </Button>
+      }
     />
   );
 }

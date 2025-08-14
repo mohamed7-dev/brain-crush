@@ -1,10 +1,11 @@
 import { db } from "@/server/db";
 import { CreateAttachmentSchema } from "../lib/schema";
 import { HttpException } from "@/lib/exceptions";
-import { ownerOnly } from "@/features/me/lib/authorization";
+import { ownerOnly, teacherOnly } from "@/features/me/lib/authorization";
 import { assetsTable, attachmentsTable } from "@/server/db/schema";
 
 export async function createAttachmentService(input: CreateAttachmentSchema) {
+  await teacherOnly();
   const { asset, courseId } = input;
   const foundCourse = await db.query.coursesTable.findFirst({
     where: (t, { eq }) => eq(t.id, courseId),

@@ -16,7 +16,6 @@ async function handleUpdatingCourse(input: UpdateCourseSchema) {
   if (!success) throw new ValidationException(z.treeifyError(error));
   const updatedCourse = await updateCourseService(parsedData);
   revalidatePath(routes.teacherCourse(parsedData.courseId));
-
   return {
     success: true,
     statusCode: 200,

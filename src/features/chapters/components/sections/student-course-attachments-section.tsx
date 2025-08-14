@@ -23,6 +23,7 @@ export function StudentCourseAttachmentsSection({
   chapter,
 }: StudentCourseAttachmentsSectionProps) {
   const attachments = chapter.course.attachments ?? [];
+  if (!attachments.length) return null;
   return (
     <Stack>
       <Typography component={"h2"} variant="h4">
@@ -34,12 +35,6 @@ export function StudentCourseAttachmentsSection({
             <ListItemButton
               sx={(theme) => ({
                 "&:hover": { textDecoration: "underline" },
-                // [`&.${listItemButtonClasses.root}`]: {
-                //   bgcolor:
-                //     theme.colorSchemes.mode === "light"
-                //       ? alpha(brand[50], 0.5)
-                //       : alpha(brand[800], 0.5),
-                // },
               })}
               href={attachment.asset.secureURL}
             >

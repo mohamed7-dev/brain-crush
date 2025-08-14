@@ -19,7 +19,7 @@ export function NoDataPlaceholder({
   return (
     <Stack sx={{ alignItems: "center", gap: 1 }}>
       {Icon && <Icon fontSize={"large"} color="error" />}
-      <Typography component={"p"} variant="h2">
+      <Typography component={"p"} variant="h3">
         {message}
       </Typography>
       {!Content && path && <Button href={path}>{buttonLabel}</Button>}

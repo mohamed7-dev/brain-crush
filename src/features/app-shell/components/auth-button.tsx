@@ -11,9 +11,13 @@ export function AuthButton() {
         <UserButton />
       </SignedIn>
       <SignedOut>
-        <Button color="secondary" variant="outlined" href={routes.signIn}>
-          <AccountCircleRounded />
-          <span>Sign in</span>
+        <Button
+          color="secondary"
+          variant="outlined"
+          href={routes.signIn}
+          startIcon={<AccountCircleRounded />}
+        >
+          Sign in
         </Button>
       </SignedOut>
     </>

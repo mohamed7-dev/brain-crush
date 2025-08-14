@@ -1,12 +1,13 @@
 import { db } from "@/server/db";
 import { HttpException } from "@/lib/exceptions";
-import { ownerOnly } from "@/features/me/lib/authorization";
+import { ownerOnly, teacherOnly } from "@/features/me/lib/authorization";
 import { assetsTable, coursesTable } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { UpdateCourseCoverSchema } from "../lib/schema";
 import cloudinary from "@/config/cloudinary.config";
 
 export async function updateCourseCoverService(input: UpdateCourseCoverSchema) {
+  await teacherOnly();
   const { courseId, coverImage } = input;
   const foundCourse = await db.query.coursesTable.findFirst({
     where: (t, { eq }) => eq(t.id, input.courseId),

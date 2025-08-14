@@ -2,22 +2,19 @@
 import React from "react";
 import { FetchStudentChapterSuccessRes } from "../../api/fetch-student-chapter.api";
 import Stack, { StackProps } from "@mui/material/Stack";
-import { Box, CircularProgress, styled } from "@mui/material";
+import { CircularProgress, styled } from "@mui/material";
 import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 import { LockOutlined } from "@mui/icons-material";
-import { CldVideoPlayer } from "next-cloudinary";
-import { useSnackbar } from "@/components/providers/snackbar-provider";
-import { useRouter } from "next/navigation";
-import { routes } from "@/lib/routes";
-import "next-cloudinary/dist/cld-video-player.css";
-import module from "./cld.module.css";
+import { useProgressChapter } from "../../hooks/use-progress-chapter";
+import { OptimizedVideo } from "@/components/optimized-video";
+import { useUser } from "@clerk/nextjs";
 
 const StyledContainer = styled(Stack)<StackProps>(({ theme }) =>
   theme.unstable_sx({
-    position: "absolute",
-    inset: 0,
     alignItems: "center",
     justifyContent: "center",
+    width: "100%",
+    height: 500,
   })
 );
 
@@ -31,35 +28,38 @@ export function StudentChapterVideoSection({
   isLocked,
   completeOnEnd,
 }: StudentChapterVideoSectionProps) {
+  const { user } = useUser();
+  const videoRef = React.useRef<HTMLVideoElement | null>(null);
   const [isReady, setIsReady] = React.useState(false);
-  const { showSnackbar } = useSnackbar();
-  const router = useRouter();
+  const { mutateAsync: progressChapter } = useProgressChapter(chapter, {});
+
+  React.useEffect(() => {
+    videoRef.current?.addEventListener("ended", handleEnding);
+    return () => videoRef.current?.removeEventListener("ended", handleEnding);
+  }, []);
+
   const handleEnding = async () => {
-    if (completeOnEnd) {
-      // TODO: create progress
-
-      if (!chapter.nextChapter) {
-        // TODO: show confetti
-      }
-      showSnackbar({ message: "Progress updated.", severity: "success" });
-      router.refresh();
-
-      if (chapter.nextChapter) {
-        router.push(
-          routes.courseChapter(chapter.nextChapter.id, chapter.courseId)
-        );
-      }
+    if (completeOnEnd && user?.id) {
+      await progressChapter({
+        chapterId: chapter.id,
+        courseId: chapter.courseId,
+        isCompleted: true,
+      });
     }
   };
 
   return (
     <Stack
+      direction={"row"}
       sx={{
-        position: "relative",
         aspectRatio: "16:9",
-        height: 500,
         bgcolor: "background.paper",
         borderRadius: 1.5,
+        maxWidth: "100%",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "red",
+        overflowY: "hidden",
       }}
     >
       {!isLocked && !isReady && (
@@ -78,14 +78,19 @@ export function StudentChapterVideoSection({
       )}
       {!isLocked && (
         <StyledContainer
-          sx={{ display: !isReady ? "none" : "block", overflow: "hidden" }}
+          direction={"row"}
+          sx={{
+            display: !isReady ? "none" : "block",
+            overflow: "hidden",
+          }}
         >
-          <CldVideoPlayer
+          <OptimizedVideo
+            videoRef={videoRef}
             src={chapter.video?.video?.publicId!}
             onDataLoad={() => setIsReady(true)}
-            onEnded={handleEnding}
             autoPlay
-            className={module.container}
+            height={chapter.video?.video?.height!}
+            width={chapter.video?.video?.width!}
           />
         </StyledContainer>
       )}

@@ -3,8 +3,8 @@ import { GET_COURSES_DEFAULT_LIMIT } from "../lib/constants";
 import { GetCoursesSchema } from "../lib/schema";
 import { db } from "@/server/db";
 import { handleCursorPagination } from "@/lib/utils";
-import { coursesTable, purchasesTable } from "@/server/db/schema";
-import { and, eq, lt, or, sql } from "drizzle-orm";
+import { purchasesTable } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
 import { getProgressService } from "./get-progress.service";
 
 export async function getStudentPurchasedCoursesService({

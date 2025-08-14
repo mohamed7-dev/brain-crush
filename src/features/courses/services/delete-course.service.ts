@@ -4,8 +4,10 @@ import { eq, inArray } from "drizzle-orm";
 import { assetsTable, coursesTable } from "@/server/db/schema";
 import cloudinary from "@/config/cloudinary.config";
 import { DeleteCourseSchema } from "../lib/schema";
+import { teacherOnly } from "@/features/me/lib/authorization";
 
 export async function deleteCourseService(input: DeleteCourseSchema) {
+  await teacherOnly();
   const foundCourse = await db.query.coursesTable.findFirst({
     where: (t, { eq }) => eq(t.id, input.courseId),
     with: {

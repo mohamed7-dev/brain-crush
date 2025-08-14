@@ -100,3 +100,10 @@ export const getStudentChapterSchema = z.object({
   courseId: z.uuid({ error: "Invalid course id" }).trim(),
 });
 export type GetStudentChapterSchema = z.infer<typeof getStudentChapterSchema>;
+
+export const progressChapterSchema = z.object({
+  chapterId: z.uuid({ error: "Invalid chapter id" }).trim(),
+  courseId: z.uuid({ error: "Invalid course id" }).trim(),
+  isCompleted: z.boolean(),
+});
+export type ProgressChapterSchema = z.infer<typeof progressChapterSchema>;

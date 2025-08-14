@@ -2,11 +2,12 @@ import { db } from "@/server/db";
 import { DeleteAttachmentSchema } from "../lib/schema";
 import { assetsTable } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
-import { ownerOnly } from "@/features/me/lib/authorization";
+import { ownerOnly, teacherOnly } from "@/features/me/lib/authorization";
 import { HttpException } from "@/lib/exceptions";
 import cloudinary from "@/config/cloudinary.config";
 
 export async function deleteAttachmentService(input: DeleteAttachmentSchema) {
+  await teacherOnly();
   const foundCourse = await db.query.coursesTable.findFirst({
     where: (t, { eq }) => eq(t.id, input.courseId),
   });

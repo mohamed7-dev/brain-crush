@@ -4,7 +4,7 @@ import { useBrowseCourses } from "../../hooks/use-browse-courses";
 import { CourseCard, CoursesListSection } from "./courses-list-section";
 
 export function HomePageCoursesSection() {
-  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } =
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage, isLoading } =
     useBrowseCourses({ variant: "View" });
   const courses = data?.pages?.flatMap((p) => p.data) ?? [];
   const coursesInList = courses.map(
@@ -25,6 +25,7 @@ export function HomePageCoursesSection() {
       hasNextPage={hasNextPage}
       fetchNextPage={fetchNextPage}
       isFetchingNextPage={isFetchingNextPage}
+      isLoading={isLoading}
     />
   );
 }

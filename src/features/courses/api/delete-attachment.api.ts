@@ -16,7 +16,6 @@ async function handleDeletingAttachment(input: DeleteAttachmentSchema) {
   if (!success) throw new ValidationException(z.treeifyError(error));
   const deletedRes = await deleteAttachmentService(parsedData);
   revalidatePath(routes.teacherCourse(parsedData.courseId));
-
   return {
     success: true,
     statusCode: 200,

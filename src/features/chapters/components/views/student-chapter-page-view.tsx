@@ -13,9 +13,9 @@ type StudentChapterPageViewProps = {
 export function StudentChapterPageView({
   chapter,
 }: StudentChapterPageViewProps) {
-  console.log(chapter);
   const completeOnEnd =
     !!chapter.course.purchases && !chapter.progresses?.isCompleted;
+
   const isLocked = !chapter.isFree && !chapter.course.purchases;
 
   return (

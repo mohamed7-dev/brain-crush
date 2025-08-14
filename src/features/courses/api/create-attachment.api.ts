@@ -16,7 +16,6 @@ async function handleCreatingAttachment(input: CreateAttachmentSchema) {
   if (!success) throw new ValidationException(z.treeifyError(error));
   const newAttachment = await createAttachmentService(parsedData);
   revalidatePath(routes.teacherCourse(parsedData.courseId));
-
   return {
     success: true,
     statusCode: 201,

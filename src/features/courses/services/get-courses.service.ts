@@ -1,23 +1,22 @@
-import { userOnly } from "@/features/me/lib/authorization";
+import { teacherOnly } from "@/features/me/lib/authorization";
 import { GET_COURSES_DEFAULT_LIMIT } from "../lib/constants";
 import { GetCoursesSchema } from "../lib/schema";
 import { db } from "@/server/db";
 import { handleCursorPagination } from "@/lib/utils";
 import { coursesTable } from "@/server/db/schema";
-import { and, eq, lt, or, sql } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 
 export async function getCoursesService({
   limit,
   cursor,
   query,
 }: GetCoursesSchema) {
-  const { userId } = await userOnly();
-
+  const { userId } = await teacherOnly();
   const defaultLimit = limit || GET_COURSES_DEFAULT_LIMIT;
 
   const [courses, total] = await Promise.all([
     db.query.coursesTable.findMany({
-      where: (t, { eq, and, or, lt, like, sql }) =>
+      where: (t, { eq, and, or, lt, sql }) =>
         and(
           eq(t.creatorId, userId),
           cursor

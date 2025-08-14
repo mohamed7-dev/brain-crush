@@ -15,16 +15,17 @@ export const fetchCoursesQueryOptions = infiniteQueryOptions({
   getNextPageParam: (lastPage) => lastPage.nextCursor,
 });
 
-export const browseCoursesQueryOptions = infiniteQueryOptions({
-  queryKey: [...queryCacheKeys.browseCourses, ""],
-  queryFn: async () => {
-    const res = await browseCourses({});
-    if ("error" in res) throw res;
-    return res;
-  },
-  initialPageParam: undefined,
-  getNextPageParam: (lastPage) => lastPage.nextCursor,
-});
+export const browseCoursesQueryOptions = (q?: string) =>
+  infiniteQueryOptions({
+    queryKey: [...queryCacheKeys.browseCourses, q ?? ""],
+    queryFn: async () => {
+      const res = await browseCourses({ query: q ?? undefined });
+      if ("error" in res) throw res;
+      return res;
+    },
+    initialPageParam: undefined,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+  });
 
 export const getStudentPurchasedCoursesQueryOptions = infiniteQueryOptions({
   queryKey: queryCacheKeys.studentPurchasedCourses,

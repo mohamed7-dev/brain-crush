@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Grid, Stack } from "@mui/material";
+import { Box, CircularProgress, Grid, Stack } from "@mui/material";
 import { CourseCard } from "../course-card";
 import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 import { VideoFileOutlined } from "@mui/icons-material";
@@ -20,6 +20,8 @@ type CoursesListSectionProps = {
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
   fetchNextPage: () => void;
+  NoCoursesAction?: React.ReactNode;
+  isLoading: boolean;
 };
 
 export function CoursesListSection({
@@ -27,6 +29,8 @@ export function CoursesListSection({
   hasNextPage,
   fetchNextPage,
   isFetchingNextPage,
+  NoCoursesAction,
+  isLoading,
 }: CoursesListSectionProps) {
   return (
     <Stack sx={{ gap: 4 }}>
@@ -51,14 +55,19 @@ export function CoursesListSection({
           </Grid>
         ))}
       </Grid>
-      {!courses.length && (
+      {isLoading && (
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <CircularProgress size={40} />
+        </Box>
+      )}
+      {!courses.length && !isLoading && (
         <NoDataPlaceholder
           Icon={VideoFileOutlined}
-          message="No courses added, yet"
-          Content={null}
+          message="No courses found"
+          Content={NoCoursesAction ?? null}
         />
       )}
-      {courses.length && (
+      {!!courses.length && !isLoading && (
         <InfiniteLoader
           hasNextPage={hasNextPage}
           fetchNextPage={fetchNextPage}

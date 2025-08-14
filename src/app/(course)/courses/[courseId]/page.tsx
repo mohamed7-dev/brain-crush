@@ -8,14 +8,16 @@ type CoursePageProps = {
 export default async function CoursePage({ params }: CoursePageProps) {
   const courseId = (await params).courseId;
   const foundCourse = await cachedGetCourseChapters({ id: courseId });
+
   if ("error" in foundCourse) {
     redirect(routes.home);
   }
 
+  const course = foundCourse.data;
   return redirect(
     routes.courseChapter(
-      foundCourse.data.courseWithChapters.chapters[0].id,
-      foundCourse.data.courseWithChapters.id
+      course?.courseWithChapters?.chapters?.[0].id!,
+      course?.courseWithChapters?.id!
     )
   );
 }

@@ -22,6 +22,7 @@
     "@mui/icons-material": "^7.2.0",
     "@mui/material": "^7.2.0",
     "@mui/material-nextjs": "^7.2.0",
+    "@mui/x-charts": "^8.10.0",
     "@neondatabase/serverless": "^1.0.1",
     "@tanstack/react-query": "^5.84.1",
     "@tanstack/react-table": "^8.21.3",
@@ -34,7 +35,6 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.62.0",
-    "react-quill": "^2.0.0",
     "server-only": "^0.0.1",
     "stripe": "^18.4.0",
     "zod": "^4.0.14"

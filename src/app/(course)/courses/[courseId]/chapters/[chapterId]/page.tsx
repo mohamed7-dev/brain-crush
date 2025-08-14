@@ -9,6 +9,7 @@ type ChapterPageProps = {
 export default async function ChapterPage({ params }: ChapterPageProps) {
   const { courseId, chapterId } = await params;
   const foundChapter = await fetchStudentChapter({ chapterId, courseId });
+
   if ("error" in foundChapter) {
     if (foundChapter.statusCode === 404) return notFound();
     throw new Error(foundChapter.message);
