@@ -11,18 +11,16 @@ export function useQueryCategories(query?: string) {
   return useSuspenseInfiniteQuery({
     queryKey: queryCacheKeys.categories,
     queryFn: async ({ pageParam }: { pageParam?: number }) => {
-      let res;
+      const searchParams = new URLSearchParams();
+      !!pageParam && searchParams.set("pageParam", JSON.stringify(pageParam));
+      !!query && searchParams.set("query", query);
       const serverRes = await fetch(
-        APIRoutes.getCategories(
-          `${!!pageParam ? "page=" + pageParam : ""}${
-            !!query ? "&query=" + query : ""
-          }`
-        )
+        APIRoutes.getCategories(searchParams.toString())
       );
       if (!serverRes.ok)
         throw new Error("Something went wrong while fetching categories!");
 
-      res = (await serverRes.json()) as
+      const res = (await serverRes.json()) as
         | FetchCategoriesErrorRes
         | FetchCategoriesSuccessRes;
 

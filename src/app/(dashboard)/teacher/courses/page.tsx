@@ -6,7 +6,7 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export default async function TeacherCoursesPage() {
   const qClient = getQueryClient();
-  void qClient.prefetchInfiniteQuery(fetchCoursesQueryOptions);
+  void qClient.prefetchInfiniteQuery(fetchCoursesQueryOptions());
 
   return (
     <HydrationBoundary state={dehydrate(qClient)}>

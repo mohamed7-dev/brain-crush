@@ -18,7 +18,8 @@ export function TeacherModeButton() {
   if (isTeacherPage) {
     return (
       <Button
-        variant="contained"
+        variant="outlined"
+        color={"secondary"}
         href={routes.home}
         startIcon={<ExitToAppOutlined />}
       >
@@ -28,11 +29,7 @@ export function TeacherModeButton() {
   }
 
   return (
-    <Button
-      variant="contained"
-      color={"secondary"}
-      href={routes.teacherCourses}
-    >
+    <Button variant="outlined" color={"secondary"} href={routes.teacherCourses}>
       Teacher Mode
     </Button>
   );

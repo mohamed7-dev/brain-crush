@@ -2,7 +2,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import { Sidebar } from "../sidebar/sidebar";
-import { SearchBox } from "@/features/app-shell/components/dashboard-layout/search-box";
+import { SearchBox } from "@/features/app-shell/components/search-box";
 import { SidebarMenuContent } from "../dashboard-layout/sidebar-menu-content";
 import { Header } from "../header/header";
 import Stack from "@mui/material/Stack";
@@ -28,7 +28,9 @@ export function DashboardLayoutView({ children }: DashboardLayoutViewProps) {
               p: 1,
             }}
           >
-            <SearchBox />
+            <React.Suspense>
+              <SearchBox />
+            </React.Suspense>
           </Box>
         </Stack>
         <Main component="main">{children}</Main>

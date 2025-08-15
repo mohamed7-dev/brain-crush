@@ -18,18 +18,16 @@ export function useGetStudentPurchasedCourses({
     }: {
       pageParam?: GetCoursesSchema["cursor"];
     }) => {
-      let res;
+      const searchParams = new URLSearchParams();
+      !!pageParam && searchParams.set("pageParam", JSON.stringify(pageParam));
+      !!query && searchParams.set("query", query);
       const serverRes = await fetch(
-        APIRoutes.getStudentPurchasedCourses(
-          `${!!pageParam ? "cursor=" + JSON.stringify(pageParam) : ""}${
-            !!query ? "&query=" + query : ""
-          }`
-        )
+        APIRoutes.getStudentPurchasedCourses(searchParams.toString())
       );
       if (!serverRes.ok)
         throw new Error("Something went wrong while fetching courses!");
 
-      res = (await serverRes.json()) as
+      const res = (await serverRes.json()) as
         | FetchStudentPurchasedCoursesErrorRes
         | FetchStudentPurchasedCoursesSuccessRes;
 

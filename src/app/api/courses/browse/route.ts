@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
   const query = searchParams.get("query");
+  const categoryId = searchParams.get("categoryId");
   const limit = searchParams.get("limit");
   const cursor = searchParams.get("cursor");
 
@@ -14,6 +15,7 @@ export async function GET(req: NextRequest) {
 
   const data = await browseCourses({
     query: query || undefined,
+    categoryId: categoryId || undefined,
     cursor: parsedCursor
       ? { ...parsedCursor, createdAt: new Date(parsedCursor.createdAt) }
       : undefined,

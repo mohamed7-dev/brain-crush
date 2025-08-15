@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Box from "@mui/material/Box";
-import { SearchBox } from "@/features/app-shell/components/dashboard-layout/search-box";
+import { SearchBox } from "@/features/app-shell/components/search-box";
 import { Header } from "../header/header";
 import { FetchCourseChaptersSuccessRes } from "@/features/courses/api/fetch-course-chapters.api";
 import { SidebarMenuContent } from "../course-layout/sidebar-menu-content";
@@ -31,7 +31,9 @@ export function CourseLayoutView({ children, course }: CourseLayoutViewProps) {
             <SidebarMenuContent course={course} />
           </Header>
           <Box sx={{ display: { xs: "block", md: "none" }, p: 1 }}>
-            <SearchBox />
+            <React.Suspense>
+              <SearchBox />
+            </React.Suspense>
           </Box>
         </Stack>
         <Main component="main">{children}</Main>

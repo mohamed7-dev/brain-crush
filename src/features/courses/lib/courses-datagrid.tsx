@@ -22,10 +22,10 @@ function PublishingStatus({ status }: { status: boolean }) {
   );
 }
 
-type RowData = FetchCoursesSuccessRes["data"][number];
+export type TeacherCourseRowData = FetchCoursesSuccessRes["data"][number];
 
 interface ActionsMenuProps {
-  row: Row<RowData>;
+  row: Row<TeacherCourseRowData>;
 }
 
 function ActionsMenu({ row }: ActionsMenuProps) {
@@ -70,7 +70,7 @@ function ActionsMenu({ row }: ActionsMenuProps) {
   );
 }
 
-export const coursesDatagridColumns: ColumnDef<RowData>[] = [
+export const coursesDatagridColumns: ColumnDef<TeacherCourseRowData>[] = [
   {
     accessorKey: "title",
     header: ({ column }) => {
@@ -79,9 +79,9 @@ export const coursesDatagridColumns: ColumnDef<RowData>[] = [
           variant="outlined"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           sx={{ width: "100%" }}
+          endIcon={<ImportExportOutlined fontSize="small" />}
         >
           Title
-          <ImportExportOutlined fontSize="small" />
         </Button>
       );
     },
@@ -94,9 +94,9 @@ export const coursesDatagridColumns: ColumnDef<RowData>[] = [
           variant="outlined"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           sx={{ width: "100%" }}
+          endIcon={<ImportExportOutlined fontSize="small" />}
         >
           Price
-          <ImportExportOutlined fontSize="small" />
         </Button>
       );
     },
@@ -115,9 +115,9 @@ export const coursesDatagridColumns: ColumnDef<RowData>[] = [
           variant="outlined"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           sx={{ width: "100%" }}
+          endIcon={<ImportExportOutlined fontSize="small" />}
         >
           Published
-          <ImportExportOutlined fontSize="small" />
         </Button>
       );
     },

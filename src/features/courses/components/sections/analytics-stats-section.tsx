@@ -8,9 +8,8 @@ type AnalyticsStatsSectionProps = {
 export function AnalyticsStatsSection({ stats }: AnalyticsStatsSectionProps) {
   return (
     <Grid container spacing={2}>
-      {/* Total Revenue Card */}
       <Grid size={{ xs: 12, sm: 6 }}>
-        <Card sx={{ bgcolor: "primary.main", color: "primary.contrastText" }}>
+        <Card sx={{ bgcolor: "background.paper" }}>
           <CardContent>
             <Typography variant="subtitle2">Total Revenue</Typography>
             <Typography variant="h5" fontWeight="bold">
@@ -20,9 +19,8 @@ export function AnalyticsStatsSection({ stats }: AnalyticsStatsSectionProps) {
         </Card>
       </Grid>
 
-      {/* Total Sales Card */}
       <Grid size={{ xs: 12, sm: 6 }}>
-        <Card sx={{ bgcolor: "primary.main", color: "primary.contrastText" }}>
+        <Card sx={{ bgcolor: "background.paper" }}>
           <CardContent>
             <Typography variant="subtitle2">Total Sales</Typography>
             <Typography variant="h5" fontWeight="bold">

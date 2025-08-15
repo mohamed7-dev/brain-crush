@@ -10,6 +10,7 @@ export function SearchResultsSection() {
     useBrowseCourses({
       variant: "Search",
       query: searchParams.get("q") ?? "",
+      categoryId: searchParams.get("category") ?? "",
     });
   const courses = data?.pages?.flatMap((p) => p.data) ?? [];
 

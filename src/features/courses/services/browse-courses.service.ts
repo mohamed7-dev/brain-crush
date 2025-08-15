@@ -8,7 +8,7 @@ import { handleCursorPagination } from "@/lib/utils";
 import { and, eq, lt, notExists } from "drizzle-orm";
 
 async function getVisitorCourses(input: BrowseCoursesSchema) {
-  const { limit, query, cursor } = input;
+  const { limit, query, cursor, categoryId } = input;
   const [courses, total] = await Promise.all([
     db.query.coursesTable.findMany({
       where: (t, { eq, and, or, lt, sql }) =>
@@ -20,6 +20,7 @@ async function getVisitorCourses(input: BrowseCoursesSchema) {
                 and(eq(t.createdAt, cursor.createdAt), lt(t.id, cursor.id))
               )
             : undefined,
+          categoryId ? eq(t.categoryId, categoryId) : undefined,
           query
             ? sql`to_tsvector('english', ${t.title}) @@ plainto_tsquery('english', ${query})`
             : undefined
@@ -53,7 +54,7 @@ async function getVisitorCourses(input: BrowseCoursesSchema) {
 }
 
 export async function browseCoursesService(input: BrowseCoursesSchema) {
-  const { limit, query, cursor } = input;
+  const { limit, query, cursor, categoryId } = input;
   const defaultLimit = limit ?? BROWSE_COURSES_DEFAULT_LIMIT;
   try {
     const { userId } = await userOnly();
@@ -80,6 +81,7 @@ export async function browseCoursesService(input: BrowseCoursesSchema) {
                   and(eq(t.createdAt, cursor.createdAt), lt(t.id, cursor.id))
                 )
               : undefined,
+            categoryId ? eq(t.categoryId, categoryId) : undefined,
             query
               ? sql`to_tsvector('english', ${t.title}) @@ plainto_tsquery('english', ${query})`
               : undefined

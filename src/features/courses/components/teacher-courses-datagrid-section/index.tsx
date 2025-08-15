@@ -2,9 +2,13 @@
 import React from "react";
 import { coursesDatagridColumns } from "../../lib/courses-datagrid";
 import {
+  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
   PaginationState,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 import { useGetCourses } from "../../hooks/use-get-courses";
@@ -19,17 +23,28 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TextField,
 } from "@mui/material";
 import { routes } from "@/lib/routes";
 import { AddOutlined } from "@mui/icons-material";
+import { useDebounce } from "@/hooks/use-debounce";
+import { SearchBox } from "./search-box";
 
-export function CoursesDatagridSection() {
+export function TeacherCoursesDatagridSection() {
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
     pageSize: GET_COURSES_DEFAULT_LIMIT,
   });
-  const { data, hasNextPage, fetchNextPage } = useGetCourses({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  );
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+
+  const [query, setQuery] = React.useState("");
+  const debouncedQuery = useDebounce(query, 500);
+
+  const { data, hasNextPage, fetchNextPage } = useGetCourses({
+    query: debouncedQuery,
+  });
 
   const rows = data?.pages?.[pagination.pageIndex]?.data ?? [];
   const totalRowsCount = data?.pages[pagination.pageIndex]?.total ?? 0;
@@ -41,30 +56,31 @@ export function CoursesDatagridSection() {
     rowCount: totalRowsCount,
     state: {
       pagination,
+      columnFilters,
+      sorting,
     },
     autoResetPageIndex: false,
     onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
-    // getPaginationRowModel: getPaginationRowModel(),
-    // onSortingChange: setSorting,
-    // getSortedRowModel: getSortedRowModel(),
-    // onColumnFiltersChange: setColumnFilters,
-    // getFilteredRowModel: getFilteredRowModel(),
-
-    // state: {
-    //   sorting,
-    //   columnFilters,
-    // },
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
   });
   return (
     <Stack sx={{ gap: 1 }}>
       <Stack
         direction={"row"}
+        flexWrap={"wrap-reverse"}
         sx={{ alignItems: "center", justifyContent: "space-between" }}
       >
-        <TextField placeholder="e.g. 'learn javascript'" />
+        <SearchBox
+          query={query}
+          handleChange={(val) => setQuery(val)}
+          table={table}
+        />
         <Button
-          variant="contained"
+          color="secondary"
           href={routes.teacherCreateCourse}
           startIcon={<AddOutlined />}
         >

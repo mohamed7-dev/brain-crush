@@ -12,21 +12,24 @@ import {
   BrowseCoursesSuccessRes,
 } from "../api/browse-courses.api";
 
-const getQueryOptions = ({ query }: Pick<BrowseCoursesSchema, "query">) => {
+const getQueryOptions = ({
+  query,
+  categoryId,
+}: Pick<BrowseCoursesSchema, "query" | "categoryId">) => {
   return infiniteQueryOptions({
-    queryKey: [...queryCacheKeys.browseCourses, query ?? ""],
+    queryKey: [...queryCacheKeys.browseCourses, query ?? "", categoryId ?? ""],
     queryFn: async ({
       pageParam,
     }: {
       pageParam?: BrowseCoursesSchema["cursor"];
     }) => {
       let res;
+      const searchParams = new URLSearchParams();
+      !!pageParam && searchParams.set("pageParam", JSON.stringify(pageParam));
+      !!query && searchParams.set("query", query);
+      !!categoryId && searchParams.set("categoryId", categoryId);
       const serverRes = await fetch(
-        APIRoutes.browseCourses(
-          `${!!pageParam ? "cursor=" + JSON.stringify(pageParam) : ""}${
-            !!query ? (!!pageParam ? "&" : "" + "query=" + query) : ""
-          }`
-        )
+        APIRoutes.browseCourses(searchParams.toString())
       );
       if (!serverRes.ok) {
         throw new Error("Something went wrong while fetching courses!");
@@ -47,17 +50,18 @@ const getQueryOptions = ({ query }: Pick<BrowseCoursesSchema, "query">) => {
 export function useBrowseCourses({
   query,
   variant,
-}: Pick<BrowseCoursesSchema, "query"> & {
+  categoryId,
+}: Pick<BrowseCoursesSchema, "query" | "categoryId"> & {
   variant: "Search" | "View";
 }) {
   if (variant === "View") {
     return useSuspenseInfiniteQuery({
-      ...getQueryOptions({ query }),
+      ...getQueryOptions({ query, categoryId }),
     });
   } else {
     return useInfiniteQuery({
-      ...getQueryOptions({ query }),
-      enabled: !!query && query?.length > 0,
+      ...getQueryOptions({ query, categoryId }),
+      enabled: !!query || !!categoryId,
     });
   }
 }

@@ -9,7 +9,7 @@ import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import { TeacherModeButton } from "../teacher-mode-button";
 import { AuthButton } from "../auth-button";
-import { SearchBox } from "@/features/app-shell/components/dashboard-layout/search-box";
+import { SearchBox } from "@/features/app-shell/components/search-box";
 import Box from "@mui/material/Box";
 import { Logo } from "../logo";
 
@@ -52,7 +52,9 @@ export function Header({ children }: HeaderProps) {
             <Logo />
           </Box>
           <Box sx={{ display: { xs: "none", md: "block" } }}>
-            <SearchBox />
+            <React.Suspense>
+              <SearchBox />
+            </React.Suspense>
           </Box>
           <Stack
             direction={"row"}

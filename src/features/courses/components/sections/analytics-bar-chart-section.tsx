@@ -2,6 +2,7 @@ import { BarChart } from "@mui/x-charts/BarChart";
 import React from "react";
 import { FetchCoursesAnalyticsSuccessRes } from "../../api/fetch-courses-analytics.api";
 import Box from "@mui/material/Box";
+import { brand } from "@/lib/theme/primitives";
 
 type AnalyticsBarChartSectionProps = {
   stats: FetchCoursesAnalyticsSuccessRes["data"];
@@ -31,6 +32,7 @@ export function AnalyticsBarChartSection({
             bgcolor: "background.paper",
             borderRadius: 1.5,
           }}
+          colors={[brand[300]]}
         />
       </Box>
     </Box>

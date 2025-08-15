@@ -5,7 +5,7 @@ import { like } from "drizzle-orm";
 import { getNextPage } from "@/lib/utils";
 
 export async function getCategoriesService(input: GetCategoriesSchema) {
-  const defaultLimit = input.limit ? input.limit : 10;
+  const defaultLimit = input.limit ? input.limit : 26;
   const defaultPage = input.page ? input.page : 0;
   const defaultOffset = defaultLimit * defaultPage;
 

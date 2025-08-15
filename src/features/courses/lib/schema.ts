@@ -126,6 +126,7 @@ export const browseCoursesSchema = getCoursesSchema
         id: z.uuidv4({ error: "Invalid course id" }).trim(),
       })
       .optional(),
+    categoryId: z.uuid().trim().optional(),
   });
 
 export type BrowseCoursesSchema = z.infer<typeof browseCoursesSchema>;

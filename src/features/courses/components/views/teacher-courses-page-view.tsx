@@ -1,13 +1,11 @@
 import React from "react";
-import { Box, Button, Stack } from "@mui/material";
-import { routes } from "@/lib/routes";
-import { CoursesDatagridSection } from "../sections/courses-datagrid-section";
-import { AddOutlined } from "@mui/icons-material";
+import { Box } from "@mui/material";
+import { TeacherCoursesDatagridSection } from "../teacher-courses-datagrid-section";
 
 export function TeacherCoursesPageView() {
   return (
-    <Box sx={{ p: 6 }}>
-      <CoursesDatagridSection />
+    <Box sx={{ p: { md: 6, xs: 2 } }}>
+      <TeacherCoursesDatagridSection />
     </Box>
   );
 }
