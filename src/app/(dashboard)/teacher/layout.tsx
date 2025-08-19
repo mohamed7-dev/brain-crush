@@ -4,6 +4,8 @@ import { checkIsTeacher } from "@/features/me/lib/utils";
 import { routes } from "@/lib/routes";
 import { redirect } from "next/navigation";
 
+export const dynamic = "auto";
+
 type TeacherLayoutProps = {
   children: React.ReactNode;
 };

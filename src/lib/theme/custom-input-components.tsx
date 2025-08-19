@@ -2,7 +2,6 @@ import { Components, Theme, alpha } from "@mui/material/styles";
 import { brand, gray } from "./primitives";
 import {
   buttonClasses,
-  circularProgressClasses,
   outlinedInputClasses,
   svgIconClasses,
   toggleButtonClasses,

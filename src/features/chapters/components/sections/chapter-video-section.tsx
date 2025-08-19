@@ -16,13 +16,10 @@ import { useUpdateChapterVideo } from "../../hooks/use-update-chapter-video";
 import {
   CloudinaryUploadWidgetResults,
   CloudinaryUploadWidgetInfo,
-  CldVideoPlayer,
 } from "next-cloudinary";
 import { UploadWidget } from "@/components/upload-widget";
 import { RequiredSuperscript } from "@/components/required-superscript";
 import { OptimizedVideo } from "@/components/optimized-video";
-
-import "next-cloudinary/dist/cld-video-player.css";
 
 type ChapterVideoSectionProps = {
   chapterId: FetchChapterSuccessRes["data"]["id"];

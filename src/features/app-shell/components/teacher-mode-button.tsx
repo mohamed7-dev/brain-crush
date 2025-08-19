@@ -8,7 +8,7 @@ import { useUser } from "@clerk/nextjs";
 
 export function TeacherModeButton() {
   const { user } = useUser();
-  const isTeacher = checkIsTeacher(user?.id!);
+  const isTeacher = checkIsTeacher(user?.id ?? "");
 
   const pathname = usePathname();
   const isTeacherPage = pathname?.includes(routes.teacher);

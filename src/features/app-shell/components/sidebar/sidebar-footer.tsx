@@ -18,7 +18,7 @@ export function SidebarFooter() {
         setMode(newMode);
       }
     },
-    []
+    [setMode]
   );
 
   if (!mode) {

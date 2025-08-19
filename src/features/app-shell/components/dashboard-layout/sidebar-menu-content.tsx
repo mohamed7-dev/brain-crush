@@ -9,7 +9,7 @@ import Stack from "@mui/material/Stack";
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
 import CompassCalibrationRounded from "@mui/icons-material/CompassCalibrationRounded";
 import { routes } from "@/lib/routes";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { BarChartRounded, ListRounded } from "@mui/icons-material";
 
 const guestListItems = [

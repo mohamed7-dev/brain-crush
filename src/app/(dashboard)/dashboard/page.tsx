@@ -8,6 +8,8 @@ import { StudentDashboardPageView } from "@/features/courses/components/views/st
 import { auth } from "@clerk/nextjs/server";
 import { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Dashboard control",
   description: "detailed info about your activity on the platform.",

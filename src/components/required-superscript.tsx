@@ -1,13 +1,12 @@
-import { red } from "@/lib/theme/primitives";
-import { colors, useColorScheme, useTheme } from "@mui/material";
-import Typography, { TypographyProps } from "@mui/material/Typography";
 import React from "react";
+import { red } from "@/lib/theme/primitives";
+import { useColorScheme } from "@mui/material";
+import Typography, { TypographyProps } from "@mui/material/Typography";
 
-type RequiredSuperscriptProps = TypographyProps;
+type RequiredSuperscriptProps = Omit<TypographyProps, "component">;
 export function RequiredSuperscript({
   sx,
   fontSize,
-  component,
   children,
   ...props
 }: RequiredSuperscriptProps) {

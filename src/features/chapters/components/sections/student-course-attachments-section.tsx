@@ -2,19 +2,15 @@
 import React from "react";
 import { FetchStudentChapterSuccessRes } from "../../api/fetch-student-chapter.api";
 import {
-  alpha,
-  Button,
   List,
   ListItem,
   ListItemButton,
-  listItemButtonClasses,
   ListItemIcon,
   ListItemText,
   Stack,
   Typography,
 } from "@mui/material";
 import { FileDownloadOutlined } from "@mui/icons-material";
-import { brand } from "@/lib/theme/primitives";
 
 type StudentCourseAttachmentsSectionProps = {
   chapter: FetchStudentChapterSuccessRes["data"];
@@ -33,9 +29,9 @@ export function StudentCourseAttachmentsSection({
         {attachments.map((attachment) => (
           <ListItem key={attachment.id}>
             <ListItemButton
-              sx={(theme) => ({
+              sx={{
                 "&:hover": { textDecoration: "underline" },
-              })}
+              }}
               href={attachment.asset.secureURL}
             >
               <ListItemIcon>

@@ -42,7 +42,7 @@ export async function deleteCourseService(input: DeleteCourseSchema) {
           assetsTable.id,
           foundCourse.chapters
             .filter((c) => c.videoId !== null)
-            .map((c) => c.videoId!)
+            .map((c) => c.videoId as string)
         )
       );
     }
@@ -65,7 +65,7 @@ export async function deleteCourseService(input: DeleteCourseSchema) {
     await cloudinary.api.delete_resources(
       foundCourse.chapters
         .filter((c) => c.video !== null)
-        .map((c) => c.video?.publicId!),
+        .map((c) => c.video?.publicId as string),
       {
         resource_type: "video",
       }

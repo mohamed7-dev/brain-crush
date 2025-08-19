@@ -1,5 +1,5 @@
 import React from "react";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Button from "@mui/material/Button";
 import { routes } from "@/lib/routes";
 import { AccountCircleRounded } from "@mui/icons-material";

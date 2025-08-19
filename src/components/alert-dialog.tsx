@@ -46,7 +46,7 @@ export function AlertDialog({
   return (
     <React.Fragment>
       {React.isValidElement(TriggerButton)
-        ? // @ts-expect-error
+        ? // @ts-expect-error type inference error on onClick
           React.cloneElement(TriggerButton, { onClick: handleClickOpen })
         : TriggerButton}
       <Dialog

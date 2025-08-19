@@ -99,6 +99,7 @@ export function CoursePriceForm({
             <Controller
               name="price"
               control={updateCoursePriceForm.control}
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
               render={({ field: { onChange, ...field } }) => (
                 <TextField
                   type="number"
@@ -111,12 +112,12 @@ export function CoursePriceForm({
                     updateCoursePriceForm.formState.errors.price?.message
                   }
                   placeholder="Set a price for your course"
-                  onChange={(e) =>
+                  onChange={(e) => {
                     updateCoursePriceForm.setValue(
                       "price",
                       Number(e.target.value)
-                    )
-                  }
+                    );
+                  }}
                   {...field}
                 />
               )}

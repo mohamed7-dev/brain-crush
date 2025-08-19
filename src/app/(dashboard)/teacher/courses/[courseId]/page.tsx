@@ -6,7 +6,6 @@ import { getQueryClient } from "@/lib/query-client";
 import { fetchCategoriesQueryOptions } from "@/features/categories/lib/prefetch";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Metadata } from "next";
-import { fetchCourses } from "@/features/courses/api/fetch-courses.api";
 
 // export async function generateStaticParams() {
 //   const courses = await fetchCourses({});

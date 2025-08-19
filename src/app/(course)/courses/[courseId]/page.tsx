@@ -8,12 +8,13 @@ export async function generateMetadata({ params }: CoursePageProps) {
   const foundCourse = await cachedGetCourseChapters({ id: courseId });
   if ("success" in foundCourse) {
     const course = foundCourse.data.courseWithChapters;
-
-    return getStudentCoursePageMetadata(
-      course.cover?.publicId!,
-      course.title,
-      course.description!
-    );
+    if (course.title && course.description && course.cover?.publicId) {
+      return getStudentCoursePageMetadata(
+        course.cover.publicId,
+        course.title,
+        course.description
+      );
+    }
   }
 }
 
@@ -31,8 +32,8 @@ export default async function CoursePage({ params }: CoursePageProps) {
   const course = foundCourse.data;
   return redirect(
     routes.courseChapter(
-      course?.courseWithChapters?.chapters?.[0].id!,
-      course?.courseWithChapters?.id!
+      course?.courseWithChapters?.chapters?.[0].id,
+      course?.courseWithChapters?.id
     )
   );
 }

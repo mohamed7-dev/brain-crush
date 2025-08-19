@@ -4,7 +4,6 @@ import { getChapterSchema, GetChapterSchema } from "../lib/schema";
 import z from "zod";
 import { getChapterService } from "../services/get-chapter.service";
 import { SuccessFindRes } from "@/lib/type-utils";
-import { unstable_cache } from "next/cache";
 import { userOnly } from "@/features/me/lib/authorization";
 
 async function handleFetchingChapter(input: GetChapterSchema) {

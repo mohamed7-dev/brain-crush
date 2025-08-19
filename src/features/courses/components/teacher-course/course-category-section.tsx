@@ -94,7 +94,7 @@ export function CourseCategorySection({
               options={categories ?? []}
               loading={isLoading}
               filterSelectedOptions
-              onChange={(_e, value) => setCategory(value?.id!)}
+              onChange={(_e, value) => setCategory(value?.id as string)}
               value={categories?.find((cat) => cat.id === defaultCategoryId)}
               renderInput={(params) => (
                 <TextField

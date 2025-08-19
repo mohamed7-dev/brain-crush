@@ -10,7 +10,6 @@ import { getProgressService } from "./get-progress.service";
 export async function getStudentPurchasedCoursesService({
   limit,
   cursor,
-  query,
 }: GetCoursesSchema) {
   const { userId } = await userOnly();
 
@@ -18,7 +17,7 @@ export async function getStudentPurchasedCoursesService({
 
   const [purchasedCourses, total] = await Promise.all([
     db.query.purchasesTable.findMany({
-      where: (t, { eq, and, or, lt, sql }) =>
+      where: (t, { eq, and, or, lt }) =>
         and(
           eq(t.userId, userId),
           cursor

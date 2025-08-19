@@ -25,13 +25,12 @@ export function Header({ children }: HeaderProps) {
 
   return (
     <AppBar
-      sx={(theme) => ({
-        // position: { xs: "fixed", md: "static" },
+      sx={{
         position: "static",
         boxShadow: 0,
         backgroundColor: "background.paper",
         backgroundImage: "none",
-      })}
+      }}
     >
       <Toolbar
         variant="regular"

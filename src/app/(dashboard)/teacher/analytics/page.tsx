@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import { CoursesAnalyticsPageView } from "@/features/courses/components/views/courses-analytics-page-view";
 import { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Courses analytics",
   description:

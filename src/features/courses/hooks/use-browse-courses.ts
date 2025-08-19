@@ -1,9 +1,5 @@
 "use client";
-import {
-  infiniteQueryOptions,
-  useInfiniteQuery,
-  useSuspenseInfiniteQuery,
-} from "@tanstack/react-query";
+import { infiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
 import { queryCacheKeys } from "@/lib/query-client";
 import { APIRoutes } from "@/lib/routes";
 import { BrowseCoursesSchema } from "../lib/schema";
@@ -23,11 +19,10 @@ const getQueryOptions = ({
     }: {
       pageParam?: BrowseCoursesSchema["cursor"];
     }) => {
-      let res;
       const searchParams = new URLSearchParams();
-      !!pageParam && searchParams.set("pageParam", JSON.stringify(pageParam));
-      !!query && searchParams.set("query", query);
-      !!categoryId && searchParams.set("categoryId", categoryId);
+      if (pageParam) searchParams.set("pageParam", JSON.stringify(pageParam));
+      if (query) searchParams.set("query", query);
+      if (categoryId) searchParams.set("categoryId", categoryId);
       const serverRes = await fetch(
         APIRoutes.browseCourses(searchParams.toString())
       );
@@ -35,7 +30,7 @@ const getQueryOptions = ({
         throw new Error("Something went wrong while fetching courses!");
       }
 
-      res = (await serverRes.json()) as
+      const res = (await serverRes.json()) as
         | BrowseCoursesSuccessRes
         | BrowseCoursesErrorRes;
 
@@ -49,19 +44,12 @@ const getQueryOptions = ({
 
 export function useBrowseCourses({
   query,
-  variant,
   categoryId,
 }: Pick<BrowseCoursesSchema, "query" | "categoryId"> & {
   variant: "Search" | "View";
 }) {
-  if (variant === "View") {
-    return useSuspenseInfiniteQuery({
-      ...getQueryOptions({ query, categoryId }),
-    });
-  } else {
-    return useInfiniteQuery({
-      ...getQueryOptions({ query, categoryId }),
-      enabled: !!query || !!categoryId,
-    });
-  }
+  return useInfiniteQuery({
+    ...getQueryOptions({ query, categoryId }),
+    enabled: !!query || !!categoryId,
+  });
 }

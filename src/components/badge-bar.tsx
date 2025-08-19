@@ -1,6 +1,6 @@
 import React from "react";
 import { IconBadge } from "@/components/ui/icon-badge";
-import { DashboardOutlined, SvgIconComponent } from "@mui/icons-material";
+import { SvgIconComponent } from "@mui/icons-material";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 

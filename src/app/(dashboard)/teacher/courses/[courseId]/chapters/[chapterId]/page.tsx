@@ -2,7 +2,6 @@ import React from "react";
 import { ChapterPageView } from "@/features/chapters/components/views/chapter-page-view";
 import { notFound } from "next/navigation";
 import { fetchChapter } from "@/features/chapters/api/fetch-chapter.api";
-import { fetchCourse } from "@/features/courses/api/fetch-course.api";
 import { Metadata } from "next";
 
 const cachedFetchChapter = React.cache(fetchChapter);

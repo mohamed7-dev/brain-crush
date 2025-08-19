@@ -13,7 +13,7 @@ type CourseProgressProps = {
   size?: "default" | "sm";
 };
 
-export function CourseProgress({ value, variant, size }: CourseProgressProps) {
+export function CourseProgress({ value, size }: CourseProgressProps) {
   return (
     <Stack direction={"row"} sx={{ alignItems: "center" }}>
       <Box sx={{ width: "100%", mr: 1 }}>

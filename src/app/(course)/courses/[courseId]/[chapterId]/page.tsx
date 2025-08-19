@@ -3,7 +3,6 @@ import { fetchStudentChapter } from "@/features/chapters/api/fetch-student-chapt
 import { StudentChapterPageView } from "@/features/chapters/components/views/student-chapter-page-view";
 import { notFound } from "next/navigation";
 import { Metadata, ResolvingMetadata } from "next";
-import { fetchCourseChapters } from "@/features/courses/api/fetch-course-chapters.api";
 
 const cachedFetchStudentChapter = React.cache(fetchStudentChapter);
 
@@ -33,8 +32,8 @@ export async function generateMetadata(
   if ("success" in foundChapter) {
     const previousImages = (await parent).openGraph?.images || [];
     return {
-      title: foundChapter.data.title,
-      description: foundChapter.data.description!,
+      title: foundChapter.data.title ?? "",
+      description: foundChapter.data.description ?? "",
       openGraph: {
         images: [...previousImages],
       },

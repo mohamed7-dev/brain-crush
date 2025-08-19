@@ -18,11 +18,11 @@ export function StudentCoursesSection() {
       ({
         id: courseWithProgress.id,
         title: courseWithProgress.title,
-        categoryName: courseWithProgress?.category?.name!,
-        price: courseWithProgress.price!,
-        chaptersLength: courseWithProgress.chapters.length!,
+        categoryName: courseWithProgress?.category?.name ?? "",
+        price: courseWithProgress.price ?? 0,
+        chaptersLength: courseWithProgress.chapters.length ?? 0,
         progress: courseWithProgress.progress,
-        coverImagePublicId: courseWithProgress.cover?.publicId!,
+        coverImagePublicId: courseWithProgress.cover?.publicId ?? "",
       } satisfies CourseCard)
   );
 

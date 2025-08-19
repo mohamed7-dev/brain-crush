@@ -16,7 +16,7 @@ export async function getChapterService(input: GetChapterSchema) {
     },
   });
   await ownerOnly(
-    foundChapter?.course.creatorId!,
+    foundChapter?.course.creatorId ?? "",
     "You are not allowed to view this chapter."
   );
 

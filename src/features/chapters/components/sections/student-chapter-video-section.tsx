@@ -33,12 +33,7 @@ export function StudentChapterVideoSection({
   const [isReady, setIsReady] = React.useState(false);
   const { mutateAsync: progressChapter } = useProgressChapter(chapter, {});
 
-  React.useEffect(() => {
-    videoRef.current?.addEventListener("ended", handleEnding);
-    return () => videoRef.current?.removeEventListener("ended", handleEnding);
-  }, []);
-
-  const handleEnding = async () => {
+  const handleEnding = React.useCallback(async () => {
     if (completeOnEnd && user?.id) {
       await progressChapter({
         chapterId: chapter.id,
@@ -46,7 +41,12 @@ export function StudentChapterVideoSection({
         isCompleted: true,
       });
     }
-  };
+  }, [chapter, completeOnEnd, progressChapter, user]);
+  React.useEffect(() => {
+    const videoAPI = videoRef.current;
+    videoAPI?.addEventListener("ended", handleEnding);
+    return () => videoAPI?.removeEventListener("ended", handleEnding);
+  }, [handleEnding]);
 
   return (
     <Stack
@@ -77,16 +77,18 @@ export function StudentChapterVideoSection({
           sx={{
             display: !isReady ? "none" : "flex",
             overflow: "hidden",
-            width: chapter.video?.video?.width!,
+            width: chapter.video?.video?.width ?? "100%",
             aspectRatio: "16:9",
           }}
         >
-          <OptimizedVideo
-            videoRef={videoRef}
-            src={chapter.video?.video?.publicId!}
-            onDataLoad={() => setIsReady(true)}
-            autoPlay
-          />
+          {chapter.video?.video?.publicId && (
+            <OptimizedVideo
+              videoRef={videoRef}
+              src={chapter.video.video.publicId}
+              onDataLoad={() => setIsReady(true)}
+              autoPlay
+            />
+          )}
         </Box>
       )}
     </Stack>

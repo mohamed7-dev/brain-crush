@@ -12,8 +12,8 @@ export function useQueryCategories(query?: string) {
     queryKey: queryCacheKeys.categories,
     queryFn: async ({ pageParam }: { pageParam?: number }) => {
       const searchParams = new URLSearchParams();
-      !!pageParam && searchParams.set("pageParam", JSON.stringify(pageParam));
-      !!query && searchParams.set("query", query);
+      if (pageParam) searchParams.set("cursor", JSON.stringify(pageParam));
+      if (query) searchParams.set("query", query);
       const serverRes = await fetch(
         APIRoutes.getCategories(searchParams.toString())
       );

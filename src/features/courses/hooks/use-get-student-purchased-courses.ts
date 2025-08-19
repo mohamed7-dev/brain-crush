@@ -17,7 +17,7 @@ export function useGetStudentPurchasedCourses() {
       pageParam?: GetCoursesSchema["cursor"];
     }) => {
       const searchParams = new URLSearchParams();
-      !!pageParam && searchParams.set("cursor", JSON.stringify(pageParam));
+      if (pageParam) searchParams.set("cursor", JSON.stringify(pageParam));
       const serverRes = await fetch(
         APIRoutes.getStudentPurchasedCourses(searchParams.toString())
       );

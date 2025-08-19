@@ -62,7 +62,7 @@ export function SnackbarProvider({ children }: SnackbarProviderProps) {
     processQueue();
   };
 
-  const handleClose = (_event?: any, reason?: string) => {
+  const handleClose = (_event?: unknown, reason?: string) => {
     if (reason === "clickaway") return;
     setOpen(false);
     handleExited();

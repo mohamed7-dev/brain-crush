@@ -5,6 +5,8 @@ import { getQueryClient } from "@/lib/query-client";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = HOME_PAGE_METADATA;
 
 export default async function HomePage() {
