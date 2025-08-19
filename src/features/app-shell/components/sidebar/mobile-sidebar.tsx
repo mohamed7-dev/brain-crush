@@ -1,11 +1,10 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Drawer, { drawerClasses } from "@mui/material/Drawer";
 import Stack from "@mui/material/Stack";
-import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import { TeacherModeButton } from "../teacher-mode-button";
 import { SidebarFooter } from "./sidebar-footer";
+import { AuthButton } from "../auth-button";
 
 type MobileSidebarProps = {
   open: boolean | undefined;
@@ -46,13 +45,7 @@ export function MobileSidebar({
           <Divider />
         </Stack>
         <Stack sx={{ p: 2, gap: "10px" }}>
-          <Button
-            variant="outlined"
-            fullWidth
-            startIcon={<LogoutRoundedIcon />}
-          >
-            Logout
-          </Button>
+          <AuthButton />
           <SidebarFooter />
         </Stack>
       </Stack>
