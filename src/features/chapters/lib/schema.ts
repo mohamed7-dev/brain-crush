@@ -6,7 +6,7 @@ import z from "zod";
 export const createChapterSchema = createInsertSchema(chaptersTable, {
   title: z.string().min(1, { error: "Chapter title can't be left empty!" }),
   courseId: z.uuid().trim(),
-}).omit({ updatedAt: true, createdAt: true, id: true });
+}).omit({ updatedAt: true, createdAt: true, id: true, position: true });
 
 export type CreateChapterSchema = z.infer<typeof createChapterSchema>;
 
