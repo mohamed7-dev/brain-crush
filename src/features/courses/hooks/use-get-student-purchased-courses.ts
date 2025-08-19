@@ -8,9 +8,7 @@ import {
   FetchStudentPurchasedCoursesSuccessRes,
 } from "../api/fetch-student-purchased-courses.api";
 
-export function useGetStudentPurchasedCourses({
-  query,
-}: Pick<GetCoursesSchema, "query">) {
+export function useGetStudentPurchasedCourses() {
   return useSuspenseInfiniteQuery({
     queryKey: queryCacheKeys.studentPurchasedCourses,
     queryFn: async ({
@@ -19,8 +17,7 @@ export function useGetStudentPurchasedCourses({
       pageParam?: GetCoursesSchema["cursor"];
     }) => {
       const searchParams = new URLSearchParams();
-      !!pageParam && searchParams.set("pageParam", JSON.stringify(pageParam));
-      !!query && searchParams.set("query", query);
+      !!pageParam && searchParams.set("cursor", JSON.stringify(pageParam));
       const serverRes = await fetch(
         APIRoutes.getStudentPurchasedCourses(searchParams.toString())
       );

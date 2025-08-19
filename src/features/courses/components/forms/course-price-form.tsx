@@ -30,7 +30,7 @@ export function CoursePriceForm({
 }: CoursePriceFormProps) {
   const updateCoursePriceForm = useForm<UpdateCoursePriceSchema>({
     defaultValues: {
-      price: defaultPrice || 0,
+      price: defaultPrice ?? 0,
       courseId,
     },
     resolver: zodResolver(updateCoursePriceSchema),

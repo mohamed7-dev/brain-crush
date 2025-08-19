@@ -4,7 +4,10 @@ import { Box, CircularProgress, Grid, Stack } from "@mui/material";
 import { CourseCard } from "../course-card";
 import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 import { VideoFileOutlined } from "@mui/icons-material";
-import { InfiniteLoader } from "@/components/infinite-loader";
+import {
+  InfiniteLoader,
+  InfiniteLoaderProps,
+} from "@/components/infinite-loader";
 
 export type CourseCard = {
   categoryName: string;
@@ -15,22 +18,17 @@ export type CourseCard = {
   title: string;
   id: string;
 };
-type CoursesListSectionProps = {
+type CoursesListSectionProps = InfiniteLoaderProps & {
   courses: CourseCard[];
-  hasNextPage: boolean;
-  isFetchingNextPage: boolean;
-  fetchNextPage: () => void;
   NoCoursesAction?: React.ReactNode;
   isLoading: boolean;
 };
 
 export function CoursesListSection({
   courses,
-  hasNextPage,
-  fetchNextPage,
-  isFetchingNextPage,
   NoCoursesAction,
   isLoading,
+  ...infiniteLoaderProps
 }: CoursesListSectionProps) {
   return (
     <Stack sx={{ gap: 4 }}>
@@ -68,11 +66,7 @@ export function CoursesListSection({
         />
       )}
       {!!courses.length && !isLoading && (
-        <InfiniteLoader
-          hasNextPage={hasNextPage}
-          fetchNextPage={fetchNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-        />
+        <InfiniteLoader {...infiniteLoaderProps} />
       )}
     </Stack>
   );

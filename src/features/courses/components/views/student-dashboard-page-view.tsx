@@ -9,12 +9,15 @@ export async function StudentDashboardPageView() {
   if ("error" in res) {
     throw new Error(res.message);
   }
+
   return (
-    <Stack sx={{ p: 4, gap: 4 }}>
-      <StudentCoursesInfoSection
-        completedCoursesLength={res.data[0].completedCourses}
-        inProgressCoursesLength={res.data[0].inProgressCourses}
-      />
+    <Stack sx={{ p: { xs: 1, md: 4 }, gap: 4 }}>
+      <React.Suspense>
+        <StudentCoursesInfoSection
+          completedCoursesLength={res.data[0].completedCourses}
+          inProgressCoursesLength={res.data[0].inProgressCourses}
+        />
+      </React.Suspense>
       <StudentCoursesSection />
     </Stack>
   );

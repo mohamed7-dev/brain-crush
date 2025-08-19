@@ -3,6 +3,12 @@ import { TeacherCoursesPageView } from "@/features/courses/components/views/teac
 import { getQueryClient } from "@/lib/query-client";
 import { fetchCoursesQueryOptions } from "@/features/courses/lib/prefetch";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Courses",
+  description: "list of all courses taught by the teacher.",
+};
 
 export default async function TeacherCoursesPage() {
   const qClient = getQueryClient();

@@ -3,22 +3,22 @@ import { createInsertSchema, createUpdateSchema } from "drizzle-zod";
 import { attachmentsTable, coursesTable } from "@/server/db/schema";
 import { createAssetSchema } from "@/features/assets/lib/schema";
 
-const insertCourseSchema = createInsertSchema(coursesTable);
+const insertCourseSchema = createInsertSchema(coursesTable, {
+  title: z.string().min(3, {
+    error: "Course title must be at least 3 characters long.",
+  }),
+});
 
-export const createCourseSchema = insertCourseSchema
-  .pick({
-    title: true,
-  })
-  .extend({
-    title: z.string().min(3, {
-      error: "Course title must be at least 3 characters long.",
-    }),
-  });
+export const createCourseSchema = insertCourseSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
 
 export type CreateCourseSchema = z.infer<typeof createCourseSchema>;
 
 export const getCourseSchema = z.object({
-  id: z.uuid({ error: "Invalid id" }),
+  id: z.uuid({ error: "Invalid course id" }),
 });
 
 export type GetCourseSchema = z.infer<typeof getCourseSchema>;
@@ -28,8 +28,9 @@ export const updateCourseSchema = z.object({
     id: true,
     createdAt: true,
     coverId: true,
+    updatedAt: true,
   }),
-  courseId: z.uuid().trim(),
+  courseId: z.uuid({ error: "Invalid course id" }).trim(),
 });
 
 export type UpdateCourseSchema = z.infer<typeof updateCourseSchema>;

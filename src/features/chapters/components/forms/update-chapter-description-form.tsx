@@ -31,7 +31,7 @@ export function UpdateChapterDescriptionForm({
 }: UpdateChapterDescriptionFormProps) {
   const updateChapterDescriptionForm = useForm<UpdateChapterDescriptionSchema>({
     defaultValues: {
-      description: defaultDescription || "",
+      description: defaultDescription ?? "",
       id: chapterId,
     },
     resolver: zodResolver(updateChapterDescriptionSchema),

@@ -17,7 +17,7 @@ export function useGetCourses({ query }: GetCoursesSchema) {
       pageParam?: GetCoursesSchema["cursor"];
     }) => {
       const searchParams = new URLSearchParams();
-      !!pageParam && searchParams.set("pageParam", JSON.stringify(pageParam));
+      !!pageParam && searchParams.set("cursor", JSON.stringify(pageParam));
       !!query && searchParams.set("query", query);
       const serverRes = await fetch(
         APIRoutes.getCourses(searchParams.toString())

@@ -1,17 +1,12 @@
 import { createAssetSchema } from "@/features/assets/lib/schema";
+import { chaptersTable } from "@/server/db/schema";
+import { createInsertSchema, createUpdateSchema } from "drizzle-zod";
 import z from "zod";
 
-export const createChapterSchema = z.object({
+export const createChapterSchema = createInsertSchema(chaptersTable, {
   title: z.string().min(1, { error: "Chapter title can't be left empty!" }),
-  courseId: z.uuid(),
-  description: z
-    .string()
-    .min(1, { error: "Chapter description can't be left empty!" })
-    .optional(),
-  isFree: z.boolean().default(false).optional(),
-  isPublished: z.boolean().default(false).optional(),
-  videoUrl: z.string().optional(),
-});
+  courseId: z.uuid().trim(),
+}).omit({ updatedAt: true, createdAt: true, id: true });
 
 export type CreateChapterSchema = z.infer<typeof createChapterSchema>;
 
@@ -35,18 +30,14 @@ export const getChapterSchema = z.object({
 export type GetChapterSchema = z.infer<typeof getChapterSchema>;
 
 export const updateChapterSchema = z.object({
-  data: createChapterSchema
-    .pick({
-      description: true,
-      videoUrl: true,
-      isFree: true,
-      isPublished: true,
-    })
-    .extend({
-      title: createChapterSchema.shape.title.optional(),
-    }),
+  data: createUpdateSchema(chaptersTable).omit({
+    courseId: true,
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+  }),
   id: z.uuid({ error: "Invalid chapter id" }).trim(),
-  courseId: z.uuid({ error: "Invalid course id" }).trim(),
+  courseId: createChapterSchema.shape.courseId,
 });
 export type UpdateChapterSchema = z.infer<typeof updateChapterSchema>;
 

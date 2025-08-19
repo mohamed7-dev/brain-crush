@@ -31,15 +31,15 @@ export function StudentCoursesInfoSection({
   inProgressCoursesLength,
 }: StudentCoursesInfoSectionProps) {
   return (
-    <Grid container columns={13} columnGap={2}>
-      <Grid size={{ xs: 12, sm: 6 }}>
+    <Grid container columns={13} columnGap={2} rowGap={2}>
+      <Grid size={6}>
         <InfoCard
           icon={WatchOutlined}
           label="In Progress"
           numberOfItems={inProgressCoursesLength}
         />
       </Grid>
-      <Grid size={{ xs: 12, sm: 6 }}>
+      <Grid size={6}>
         <InfoCard
           icon={CheckOutlined}
           label="Completed"

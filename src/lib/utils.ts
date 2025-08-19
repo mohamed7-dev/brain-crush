@@ -34,3 +34,5 @@ export function handleCursorPagination<T extends Array<object>>({
     data: T;
   };
 }
+
+export const isProduction = process.env.NODE_ENV === "production";

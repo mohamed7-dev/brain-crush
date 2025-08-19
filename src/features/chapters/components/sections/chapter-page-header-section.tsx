@@ -5,14 +5,14 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import { useUpdateChapter } from "../../hooks/use-update-chapter";
 import { useSnackbar } from "@/components/providers/snackbar-provider";
 import { useRouter } from "next/navigation";
 import { useDeleteChapter } from "../../hooks/use-delete-chapter";
 import { routes } from "@/lib/routes";
 import { AlertDialog } from "@/components/alert-dialog";
-import { DeleteOutlineOutlined, RemoveOutlined } from "@mui/icons-material";
+import { DeleteOutlineOutlined } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
+import { useUpdateChapter } from "../../hooks/use-update-chapter";
 
 type ChapterPagePageHeaderProps = {
   chapter: FetchChapterSuccessRes["data"];
@@ -29,9 +29,14 @@ export function ChapterPageHeaderSection({
   const isComplete = requiredFields.every(Boolean);
   const { showSnackbar } = useSnackbar();
   const router = useRouter();
-  const { mutateAsync: updateChapter, isPending } = useUpdateChapter({
+  const { mutateAsync: publishChapter, isPending } = useUpdateChapter({
     onSuccess: (data) => {
-      showSnackbar({ message: data.message, severity: "success" });
+      showSnackbar({
+        message: `Chapter has been ${
+          data.data.isPublished ? "published" : "unpublished"
+        } successfully.`,
+        severity: "success",
+      });
       router.refresh();
     },
     onError: (error) => {
@@ -40,13 +45,13 @@ export function ChapterPageHeaderSection({
   });
   const handlePublishing = async () => {
     if (chapter.isPublished) {
-      await updateChapter({
+      await publishChapter({
         data: { isPublished: false },
         id: chapter.id,
         courseId: chapter.courseId,
       });
     } else {
-      await updateChapter({
+      await publishChapter({
         data: { isPublished: true },
         id: chapter.id,
         courseId: chapter.courseId,
@@ -73,6 +78,7 @@ export function ChapterPageHeaderSection({
   return (
     <Stack
       direction={"row"}
+      flexWrap={"wrap"}
       sx={{ alignItems: "center", justifyContent: "space-between" }}
     >
       <Box>
@@ -85,8 +91,7 @@ export function ChapterPageHeaderSection({
       </Box>
       <Stack direction={"row"} sx={{ alignItems: "center", gap: 2 }}>
         <Button
-          variant="contained"
-          color="primary"
+          variant="outlined"
           loading={isPending}
           loadingPosition="start"
           onClick={handlePublishing}

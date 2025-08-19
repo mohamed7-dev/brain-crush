@@ -2,7 +2,7 @@
 import React from "react";
 import { FetchStudentChapterSuccessRes } from "../../api/fetch-student-chapter.api";
 import Stack, { StackProps } from "@mui/material/Stack";
-import { CircularProgress, styled } from "@mui/material";
+import { Box, CircularProgress, styled } from "@mui/material";
 import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 import { LockOutlined } from "@mui/icons-material";
 import { useProgressChapter } from "../../hooks/use-progress-chapter";
@@ -52,14 +52,10 @@ export function StudentChapterVideoSection({
     <Stack
       direction={"row"}
       sx={{
-        aspectRatio: "16:9",
         bgcolor: "background.paper",
         borderRadius: 1.5,
-        maxWidth: "100%",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "red",
-        overflowY: "hidden",
       }}
     >
       {!isLocked && !isReady && (
@@ -77,11 +73,12 @@ export function StudentChapterVideoSection({
         </StyledContainer>
       )}
       {!isLocked && (
-        <StyledContainer
-          direction={"row"}
+        <Box
           sx={{
-            display: !isReady ? "none" : "block",
+            display: !isReady ? "none" : "flex",
             overflow: "hidden",
+            width: chapter.video?.video?.width!,
+            aspectRatio: "16:9",
           }}
         >
           <OptimizedVideo
@@ -89,10 +86,8 @@ export function StudentChapterVideoSection({
             src={chapter.video?.video?.publicId!}
             onDataLoad={() => setIsReady(true)}
             autoPlay
-            height={chapter.video?.video?.height!}
-            width={chapter.video?.video?.width!}
           />
-        </StyledContainer>
+        </Box>
       )}
     </Stack>
   );

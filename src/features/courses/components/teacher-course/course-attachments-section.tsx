@@ -95,6 +95,7 @@ export function CourseAttachmentsSection({
     >
       <Stack
         direction={"row"}
+        flexWrap={"wrap"}
         sx={{ justifyContent: "space-between", alignItems: "center" }}
       >
         <Typography component={"p"} variant="subtitle2">

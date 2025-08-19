@@ -19,6 +19,7 @@ async function handleUpdatingChapter(input: UpdateChapterSchema) {
   revalidatePath(
     routes.teacherCourseChapter(parsedData.courseId, parsedData.id)
   );
+  revalidatePath(routes.teacherCourse(parsedData.courseId));
   return {
     success: true,
     statusCode: 200,

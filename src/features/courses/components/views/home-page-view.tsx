@@ -4,8 +4,10 @@ import { HomePageCoursesSection } from "../sections/home-page-courses-section";
 
 export function HomePageView() {
   return (
-    <Stack sx={{ p: { md: 6, xs: 2 } }}>
-      <HomePageCoursesSection />
+    <Stack sx={{ p: { md: 6, xs: 1 } }}>
+      <React.Suspense>
+        <HomePageCoursesSection />
+      </React.Suspense>
     </Stack>
   );
 }

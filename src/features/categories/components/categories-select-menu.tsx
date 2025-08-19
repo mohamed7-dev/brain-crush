@@ -29,7 +29,7 @@ export function CategoriesSelectMenu({
             if (selected.length === 0) {
               return <em>Category</em>;
             }
-            return selected;
+            return categories.find((cat) => cat.id === selected)?.name ?? "";
           }}
         >
           <MenuItem disabled value="">

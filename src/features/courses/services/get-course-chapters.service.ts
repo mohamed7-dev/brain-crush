@@ -9,6 +9,7 @@ async function getVisitorCourseChapters(input: GetCourseSchema) {
   const foundCourseWithChapters = await db.query.coursesTable.findFirst({
     where: (t, { eq, and }) => and(eq(t.isPublished, true), eq(t.id, input.id)),
     with: {
+      cover: true,
       chapters: {
         where: (t, { eq }) => eq(t.isPublished, true),
         orderBy: (t, { asc }) => asc(t.position),
@@ -38,6 +39,7 @@ export async function getCourseChaptersService(input: GetCourseSchema) {
       where: (t, { eq, and }) =>
         and(eq(t.isPublished, true), eq(t.id, input.id)),
       with: {
+        cover: true,
         purchases: {
           where: (t, { eq, and }) =>
             and(eq(t.userId, userId), eq(t.courseId, input.id)),

@@ -4,10 +4,8 @@ import Divider from "@mui/material/Divider";
 import Drawer, { drawerClasses } from "@mui/material/Drawer";
 import Stack from "@mui/material/Stack";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
-import { SidebarMenuContent } from "../dashboard-layout/sidebar-menu-content";
 import { TeacherModeButton } from "../teacher-mode-button";
 import { SidebarFooter } from "./sidebar-footer";
-import { Logo } from "../logo";
 
 type MobileSidebarProps = {
   open: boolean | undefined;
@@ -41,8 +39,6 @@ export function MobileSidebar({
         }}
       >
         <Stack direction={"column"} sx={{ p: 2, gap: "10px" }}>
-          <Logo />
-          <Divider />
           <TeacherModeButton />
         </Stack>
         <Stack sx={{ flexGrow: 1 }}>

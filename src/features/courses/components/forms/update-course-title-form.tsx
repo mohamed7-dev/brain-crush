@@ -29,7 +29,7 @@ export function UpdateCourseTitleForm({
 }: UpdateTitleFormProps) {
   const updateCourseTitleForm = useForm<UpdateCourseTitleSchema>({
     defaultValues: {
-      title: defaultTitle,
+      title: defaultTitle ?? "",
       courseId,
     },
     resolver: zodResolver(updateCourseTitleSchema),

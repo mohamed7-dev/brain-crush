@@ -20,6 +20,7 @@ import {
 } from "next-cloudinary";
 import { UploadWidget } from "@/components/upload-widget";
 import { RequiredSuperscript } from "@/components/required-superscript";
+import { OptimizedVideo } from "@/components/optimized-video";
 
 import "next-cloudinary/dist/cld-video-player.css";
 
@@ -126,14 +127,10 @@ export function ChapterVideoSection({
       )}
       {!isEditing && video && (
         <Box sx={{ mt: 2 }}>
-          <CldVideoPlayer
+          <OptimizedVideo
             src={video.publicId}
             width={video.width!}
             height={400}
-            showJumpControls
-            controls
-            sourceTypes={["hls", "dash"]}
-            transformation={{ streaming_profile: "hd" }}
           />
         </Box>
       )}

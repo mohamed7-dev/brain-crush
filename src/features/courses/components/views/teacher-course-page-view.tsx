@@ -23,9 +23,9 @@ type TeacherCoursePageViewProps = {
 };
 export function TeacherCoursePageView({ course }: TeacherCoursePageViewProps) {
   return (
-    <Stack sx={{ p: 6, gap: 6 }}>
+    <Stack sx={{ p: { xs: 2, md: 6 }, gap: 6 }}>
       <TeacherCoursePageHeader course={course} />
-      <Grid container columns={13} columnGap={4}>
+      <Grid container columns={13} justifyContent={{ xs: "center" }} gap={4}>
         <Grid size={{ xs: 12, md: 6 }}>
           <BadgeBar icon={DashboardOutlined} label="Customize your course" />
           <Stack sx={{ gap: 2, mt: 4 }}>

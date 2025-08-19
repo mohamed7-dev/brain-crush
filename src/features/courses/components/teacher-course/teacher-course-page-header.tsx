@@ -79,6 +79,7 @@ export function TeacherCoursePageHeader({
   return (
     <Stack
       direction={"row"}
+      flexWrap={"wrap"}
       sx={{
         alignItems: "center",
         justifyContent: "space-between",
@@ -94,8 +95,7 @@ export function TeacherCoursePageHeader({
       </Box>
       <Stack direction={"row"} sx={{ alignItems: "center", gap: 2 }}>
         <Button
-          variant="contained"
-          color="primary"
+          variant="outlined"
           loading={isUpdating}
           loadingPosition="start"
           onClick={handlePublishing}

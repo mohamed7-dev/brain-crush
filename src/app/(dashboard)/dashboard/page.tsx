@@ -6,6 +6,12 @@ import { getStudentPurchasedCoursesQueryOptions } from "@/features/courses/lib/p
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { StudentDashboardPageView } from "@/features/courses/components/views/student-dashboard-page-view";
 import { auth } from "@clerk/nextjs/server";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard control",
+  description: "detailed info about your activity on the platform.",
+};
 
 export default async function DashboardPage() {
   const { userId } = await auth();

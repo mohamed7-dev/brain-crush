@@ -22,7 +22,7 @@ type ChapterPageViewProps = {
 };
 export function ChapterPageView({ chapter }: ChapterPageViewProps) {
   return (
-    <Stack sx={{ gap: 4, p: 4 }}>
+    <Stack sx={{ gap: 4, p: { xs: 1, md: 6 } }}>
       {!chapter.isPublished && (
         <Alert severity="warning" sx={{ width: "100%" }}>
           This chapter is not published. It will not be visible in the course
@@ -37,7 +37,7 @@ export function ChapterPageView({ chapter }: ChapterPageViewProps) {
         </NavigationBar>
         <ChapterPageHeaderSection chapter={chapter} />
       </Stack>
-      <Grid container columns={13} columnGap={4}>
+      <Grid container columns={13} justifyContent={{ xs: "center" }} gap={4}>
         <Grid size={{ xs: 12, md: 6 }}>
           <Stack sx={{ gap: 2, mb: 4 }}>
             <BadgeBar

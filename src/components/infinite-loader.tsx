@@ -2,7 +2,7 @@ import React from "react";
 import { useObserver } from "@/hooks/use-observer";
 import { Button, Stack, Typography } from "@mui/material";
 
-type InfiniteLoaderProps = {
+export type InfiniteLoaderProps = {
   isManual?: boolean;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;

@@ -78,6 +78,7 @@ export function CourseChaptersSection({
     >
       <Stack
         direction={"row"}
+        flexWrap={"wrap"}
         sx={{ justifyContent: "space-between", alignItems: "center" }}
       >
         <Typography component={"p"} variant="subtitle2">
@@ -94,7 +95,7 @@ export function CourseChaptersSection({
           }
           disabled={isReordering}
         >
-          {formMode === "Creation" ? "Cancel" : "Add video"}
+          {formMode === "Creation" ? "Cancel" : "Add chapter"}
         </Button>
       </Stack>
 

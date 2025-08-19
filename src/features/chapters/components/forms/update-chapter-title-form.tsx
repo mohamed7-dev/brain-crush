@@ -30,7 +30,7 @@ export function UpdateChapterTitleForm({
 }: UpdateChapterTitleFormProps) {
   const updateChapterTitleForm = useForm<UpdateChapterTitleSchema>({
     defaultValues: {
-      title: defaultTitle,
+      title: defaultTitle ?? "",
       id: chapterId,
     },
     resolver: zodResolver(updateChapterTitleSchema),

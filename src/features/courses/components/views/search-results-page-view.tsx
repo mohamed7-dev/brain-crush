@@ -4,8 +4,8 @@ import { SearchResultsSection } from "../sections/search-results-section";
 
 export function SearchResultsPageView() {
   return (
-    <Stack sx={{ p: { md: 6, xs: 2 } }}>
-      <React.Suspense fallback={<>Loading...</>}>
+    <Stack sx={{ p: { md: 6, xs: 1 } }}>
+      <React.Suspense>
         <SearchResultsSection />
       </React.Suspense>
     </Stack>

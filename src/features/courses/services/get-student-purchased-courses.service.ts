@@ -44,15 +44,16 @@ export async function getStudentPurchasedCoursesService({
     }),
     db.$count(purchasesTable, eq(purchasesTable.userId, userId)),
   ]);
-  //  TODO: use this query to enable searching
-  //   query
-  //     ? sql`to_tsvector('english', ${coursesTable.title}) @@ plainto_tsquery('english', ${query})`
-  //     : undefined;
 
-  type CourseWithProgress = (typeof purchasedCourses)[number]["course"] & {
+  const { nextCursor, data: paginatedCourses } = handleCursorPagination({
+    data: purchasedCourses,
+    limit: defaultLimit,
+  });
+
+  type CourseWithProgress = (typeof paginatedCourses)[number]["course"] & {
     progress: number;
   };
-  const courses = purchasedCourses.map(
+  const courses = paginatedCourses.map(
     (purchase) => purchase.course
   ) as unknown as CourseWithProgress[];
 
@@ -65,10 +66,7 @@ export async function getStudentPurchasedCoursesService({
   const coursesInProgress = courses.filter(
     (course) => (course.progress ?? 0) < 100
   );
-  const { nextCursor } = handleCursorPagination({
-    data: purchasedCourses,
-    limit: defaultLimit,
-  });
+
   return {
     data: {
       completedCourses,

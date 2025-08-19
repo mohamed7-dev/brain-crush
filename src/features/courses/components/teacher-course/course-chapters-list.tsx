@@ -50,7 +50,11 @@ export function CourseChaptersList({
       <Droppable droppableId="chapters">
         {(provided) => (
           <Stack
-            sx={{ gap: 2, opacity: isReorderingActive ? 0.7 : 1 }}
+            sx={{
+              gap: 2,
+              opacity: isReorderingActive ? 0.7 : 1,
+              overflowX: "auto",
+            }}
             ref={provided.innerRef}
             {...provided.droppableProps}
           >

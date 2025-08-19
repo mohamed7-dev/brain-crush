@@ -106,7 +106,7 @@ export const assetsTable = pgTable("assets", {
   format: text("format").default("raw").notNull(),
   version: text("version").notNull(),
   secureURL: text("secure_url").notNull(),
-  bytes: real("bytes"),
+  bytes: integer("bytes"),
   duration: decimal("duration", { precision: 2 }),
   width: integer("width"),
   height: integer("height"),

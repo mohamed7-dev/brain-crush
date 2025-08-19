@@ -5,6 +5,7 @@ import { getStudentCoursesStatsService } from "../services/get-student-courses-s
 
 async function handleFetchingStudentCoursesStats() {
   const stats = await getStudentCoursesStatsService();
+  console.log(stats);
   return {
     success: true,
     statusCode: 200,

@@ -13,8 +13,7 @@ export const routes = {
   teacherCreateCourse: "/teacher/create",
   teacherAnalytics: "/teacher/analytics",
   course: (id: string) => `/courses/${id}`,
-  courseChapter: (id: string, courseId: string) =>
-    `/courses/${courseId}/chapters/${id}`,
+  courseChapter: (id: string, courseId: string) => `/courses/${courseId}/${id}`,
   signIn: "/sign-in",
   signUp: "/sign-up",
   stripeSuccess: (courseId: string) =>

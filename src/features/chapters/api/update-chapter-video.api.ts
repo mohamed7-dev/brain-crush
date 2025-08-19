@@ -17,6 +17,7 @@ async function handleUpdatingChapterVideo(input: UpdateChapterVideoSchema) {
     error,
     data: parsedData,
   } = updateChapterVideoSchema.safeParse(input);
+  console.log(error);
   if (!success) throw new ValidationException(z.treeifyError(error));
   const updatedChapter = await updateChapterVideoService(parsedData);
   revalidatePath(

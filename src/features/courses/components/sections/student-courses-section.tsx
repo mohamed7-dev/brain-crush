@@ -7,7 +7,7 @@ import { routes } from "@/lib/routes";
 
 export function StudentCoursesSection() {
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage, isLoading } =
-    useGetStudentPurchasedCourses({});
+    useGetStudentPurchasedCourses();
   const coursesWithProgresses =
     data.pages.flatMap((p) => [
       ...p.data.completedCourses,
@@ -33,6 +33,7 @@ export function StudentCoursesSection() {
       fetchNextPage={fetchNextPage}
       isFetchingNextPage={isFetchingNextPage}
       isLoading={isLoading}
+      isManual={true}
       NoCoursesAction={
         <Button href={routes.home} variant="outlined">
           Start here

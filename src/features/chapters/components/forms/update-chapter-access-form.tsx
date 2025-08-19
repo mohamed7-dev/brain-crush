@@ -30,7 +30,7 @@ export function UpdateChapterAccessForm({
 }: UpdateChapterAccessFormProps) {
   const updateChapterAccessForm = useForm<UpdateChapterAccessSchema>({
     defaultValues: {
-      isFree: defaultIsFree,
+      isFree: defaultIsFree ?? false,
       id: chapterId,
     },
     resolver: zodResolver(updateChapterAccessSchema),
@@ -45,7 +45,6 @@ export function UpdateChapterAccessForm({
       onSuccess: (data) => {
         showSnackbar({ message: data.message, severity: "success" });
         router.refresh();
-        updateChapterAccessForm.reset({ isFree: data.data.isFree });
       },
       onError: (error) => {
         showSnackbar({ message: error.message, severity: "error" });
@@ -57,7 +56,7 @@ export function UpdateChapterAccessForm({
     await updateChapter({
       data: { isFree: values.isFree },
       courseId,
-      id: values.id,
+      id: chapterId,
     });
   };
   return (
@@ -106,7 +105,6 @@ export function UpdateChapterAccessForm({
               control={updateChapterAccessForm.control}
               render={({ field }) => (
                 <FormControlLabel
-                  required
                   control={
                     <Switch checked={field.value} onChange={field.onChange} />
                   }

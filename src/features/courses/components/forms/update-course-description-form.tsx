@@ -30,7 +30,7 @@ export function UpdateCourseDescriptionForm({
 }: UpdateDescriptionFormProps) {
   const updateCourseDescriptionForm = useForm<UpdateCourseDescriptionSchema>({
     defaultValues: {
-      description: defaultDescription || "",
+      description: defaultDescription ?? "",
       courseId,
     },
     resolver: zodResolver(updateCourseDescriptionSchema),

@@ -5,7 +5,9 @@ import { TeacherCoursesDatagridSection } from "../teacher-courses-datagrid-secti
 export function TeacherCoursesPageView() {
   return (
     <Box sx={{ p: { md: 6, xs: 2 } }}>
-      <TeacherCoursesDatagridSection />
+      <React.Suspense>
+        <TeacherCoursesDatagridSection />
+      </React.Suspense>
     </Box>
   );
 }
