@@ -19,6 +19,9 @@ export default function RootLayout({
   return (
     <SessionProvider>
       <html lang="en" suppressHydrationWarning>
+        <head>
+          <meta name="apple-mobile-web-app-title" content="Brain Crush" />
+        </head>
         <body className={roboto.variable}>
           <MuiCacheProvider>
             <ThemeProvider>
